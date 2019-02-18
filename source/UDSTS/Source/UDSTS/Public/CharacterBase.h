@@ -30,7 +30,7 @@ protected:
 	float CameraSensitivity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-	float MovementSpeed;
+	float SwimSpeed;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -42,6 +42,12 @@ protected:
 	void MoveRight(float value);
 
 	void MoveUp(float value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (ClampMin = "0.0", ClampMax = "1.0"))
+	float VerticalSwimScale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (ClampMin = "0.0", ClampMax = "1.0"))
+	float HorizontalSwimScale;
 
 public:	
 	// Called every frame
