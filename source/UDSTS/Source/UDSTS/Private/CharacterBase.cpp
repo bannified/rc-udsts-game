@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -22,6 +23,11 @@ ACharacterBase::ACharacterBase()
 
 	MainCamera->SetRelativeLocation(FVector(0.0, 50.0, 80.0));
 
+	SwimSpeed = 300.0f;
+
+	HorizontalSwimScale = 1.0f;
+	VerticalSwimScale = 1.0f;
+
 }
 
 // Called when the game starts or when spawned
@@ -29,6 +35,7 @@ void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	GetCharacterMovement()->MaxSwimSpeed = SwimSpeed;
 }
 
 void ACharacterBase::MoveForward(float value)
@@ -38,7 +45,11 @@ void ACharacterBase::MoveForward(float value)
 	UKismetMathLibrary::BreakRotator(GetControlRotation(), rot.Roll, rot.Pitch, rot.Yaw);
 	rot.Roll = 0;
 
-	AddMovementInput(UKismetMathLibrary::GetForwardVector(rot), value);
+	FVector resultVector = UKismetMathLibrary::GetForwardVector(rot);
+	resultVector.Y *= VerticalSwimScale;
+	resultVector.X *= HorizontalSwimScale;
+
+	AddMovementInput(resultVector, value);
 }
 
 void ACharacterBase::MoveRight(float value)
@@ -48,12 +59,17 @@ void ACharacterBase::MoveRight(float value)
 	UKismetMathLibrary::BreakRotator(GetControlRotation(), rot.Roll, rot.Pitch, rot.Yaw);
 	rot.Roll = 0;
 
+	FVector resultVector = UKismetMathLibrary::GetForwardVector(rot);
+
+	resultVector.Y *= VerticalSwimScale;
+	resultVector.X *= HorizontalSwimScale;
+
 	AddMovementInput(UKismetMathLibrary::GetRightVector(rot), value);
 }
 
 void ACharacterBase::MoveUp(float value)
 {
-	Super::AddMovementInput(FVector(0.0, 0.0, 1.0), value);
+	Super::AddMovementInput(FVector(0.0, 0.0, VerticalSwimScale), value);
 }
 
 // Called every frame
