@@ -3,6 +3,7 @@
 #include "CharacterBase.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -32,12 +33,22 @@ void ACharacterBase::BeginPlay()
 
 void ACharacterBase::MoveForward(float value)
 {
-	Super::AddMovementInput(GetActorForwardVector() * value);
+	FRotator rot = FRotator(0, 0, 0);
+
+	UKismetMathLibrary::BreakRotator(GetControlRotation(), rot.Roll, rot.Pitch, rot.Yaw);
+	rot.Roll = 0;
+
+	AddMovementInput(UKismetMathLibrary::GetForwardVector(rot), value);
 }
 
 void ACharacterBase::MoveRight(float value)
 {
-	Super::AddMovementInput(GetActorRightVector() * value);
+	FRotator rot = FRotator(0, 0, 0);
+
+	UKismetMathLibrary::BreakRotator(GetControlRotation(), rot.Roll, rot.Pitch, rot.Yaw);
+	rot.Roll = 0;
+
+	AddMovementInput(UKismetMathLibrary::GetRightVector(rot), value);
 }
 
 void ACharacterBase::MoveUp(float value)
