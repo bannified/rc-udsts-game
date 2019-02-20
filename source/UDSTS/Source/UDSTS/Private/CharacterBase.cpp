@@ -81,6 +81,11 @@ void ACharacterBase::MoveUp(float value)
 
 void ACharacterBase::Boost_Action()
 {
+	if (!b_CanBoost)
+	{
+		return;
+	}
+
 	FVector inputVector = GetInputAxisValue(FName("MoveForward")) * GetActorForwardVector()
 						+ GetInputAxisValue(FName("MoveRight")) * GetActorRightVector();
 	inputVector.Normalize();
@@ -105,6 +110,12 @@ void ACharacterBase::Boost_Action()
 		UGameplayStatics::SpawnSoundAttached(BoosterSound, GetMesh(), RightBoosterSocketName, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset, false, 0.5f);
 	}
 
+	this->b_CanBoost = false;
+
+	GetWorldTimerManager().SetTimer(Boost_Cooldown_TimerHandle, [&]()
+	{
+		this->b_CanBoost = true;
+	}, Boost_Cooldown, false);
 }
 
 void ACharacterBase::AddImpulseToCharacterInDirectionWithMagnitude(const FVector directionalVector, const float impulseMagnutide)
