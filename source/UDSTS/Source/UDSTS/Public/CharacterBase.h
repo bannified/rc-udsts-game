@@ -35,19 +35,59 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	/**
+	 * Movement Methods
+	 */
+
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	void MoveForward(float value);
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	void MoveRight(float value);
 
+	UFUNCTION(BlueprintCallable, Category = "Movement")
 	void MoveUp(float value);
+
+	/**
+	 * Thrusts player in a direction based on current velocity and input direction.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Advanced Movement")
+	void Boost_Action();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Movement")
+	float Boost_Force;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Movement")
+	float Boost_Cooldown;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Movement")
+	float b_CanBoost;
+
+	FTimerHandle Boost_Cooldown_TimerHandle;
+
+	UFUNCTION(BlueprintCallable, Category = "Advanced Movement")
+	void AddImpulseToCharacterInDirectionWithMagnitude(const FVector directionalVector, const float impulseMagnutide);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (ClampMin = "0.0", ClampMax = "1.0"))
 	float VerticalSwimScale;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (ClampMin = "0.0", ClampMax = "1.0"))
 	float HorizontalSwimScale;
+
+	/**
+	 * Visual/Sound Effects
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+	USoundBase* BoosterSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visuals")
+	UParticleSystem* BoosterParticleSystem;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Visuals")
+	FName LeftBoosterSocketName;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Visuals")
+	FName RightBoosterSocketName;
 
 public:	
 	// Called every frame
