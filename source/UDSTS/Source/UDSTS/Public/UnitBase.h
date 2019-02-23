@@ -22,9 +22,6 @@ public:
 
 protected:
 
-	//UPROPERTY(EditDefaultsOnly, Category = "Components")
-	//USkeletalMeshComponent* MainCollider;
-
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	USkeletalMeshComponent* MainMesh;
 

@@ -14,14 +14,6 @@ AUnitBase::AUnitBase()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	/*MainCollider = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MainCollider"));
-	SetRootComponent(MainCollider);
-
-	MainCollider->SetCanEverAffectNavigation(false);
-	MainCollider->SetCollisionObjectType(ECC_WorldDynamic);
-	MainCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	MainCollider->SetCollisionProfileName(FName("BlockAllDynamic"));*/
-
 	MainMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MainMesh"));
 	SetRootComponent(MainMesh);
 
@@ -44,13 +36,6 @@ AUnitBase::AUnitBase()
 void AUnitBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	/*AAIController* aiController = UAIBlueprintHelperLibrary::GetAIController(this);
-
-	if (UnitBehaviorTree_Asset != nullptr && aiController != nullptr)
-	{
-		UAIBlueprintHelperLibrary::GetAIController(this)->RunBehaviorTree(UnitBehaviorTree_Asset);
-	}*/
 
 }
 
