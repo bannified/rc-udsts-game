@@ -10,6 +10,7 @@ class USkeletalMeshComponent;
 class UFloatingPawnMovement;
 class UBehaviorTree;
 class UMeshComponent;
+class UHealthComponent;
 
 UCLASS()
 class UDSTS_API AUnitBase : public APawn
@@ -27,6 +28,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	UFloatingPawnMovement* FloatingPawnMovement;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UHealthComponent* HealthComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 	UBehaviorTree* UnitBehaviorTreeAsset;

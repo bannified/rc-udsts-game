@@ -6,6 +6,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "AIModule/Classes/AIController.h"
 #include "Components/CapsuleComponent.h"
+#include "HealthComponent.h"
 //#include "Blueprint/AIBlueprintHelperLibrary.h"
 
 // Sets default values
@@ -28,6 +29,8 @@ AUnitBase::AUnitBase()
 	FloatingPawnMovement->Acceleration = 2500.0f;
 	FloatingPawnMovement->Deceleration = 8000.0f;
 	FloatingPawnMovement->TurningBoost = 1.0f;
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 
 	SetReplicateMovement(true);
 }

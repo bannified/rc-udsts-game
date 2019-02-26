@@ -19,10 +19,6 @@ public:
 	// Sets default values for this pawn's properties
 	AEnemyBase();
 
-	UPROPERTY(EditAnywhere, Category = "HealthComponent")
-		class UHealthComponent* healthComponent;
-	UPROPERTY(EditAnywhere, Category = "UnitBase")
-		class AUnitBase* unitBase;
 	UPROPERTY(VisibleAnywhere)
 		float movementSpeed;
 	UPROPERTY(VisibleAnywhere)

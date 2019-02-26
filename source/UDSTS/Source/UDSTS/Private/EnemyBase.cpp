@@ -7,8 +7,6 @@ AEnemyBase::AEnemyBase()
 {
 	// Set this pawn to call Tick() every frame.  You can t urn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	healthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
-	unitBase = CreateDefaultSubobject<AUnitBase>(TEXT("Unit Base"));
 }
 
 // Called when the game starts or when spawned
@@ -31,5 +29,5 @@ void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 }
 
 void AEnemyBase::TakeDamage(float damage) {
-	healthComponent->TakeDamage(damage);
+	Super::HealthComponent->TakeDamage(damage);
 }
