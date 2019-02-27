@@ -97,3 +97,16 @@ void UHealthComponent::TakeDamage(float damage)
 	}
 }
 
+void UHealthComponent::AlterHealth(float Amount)
+{
+	// already dead
+	if (currentHealth <= 0)
+		return;
+
+	currentHealth = FMath::Clamp(currentHealth + Amount, 0.0f, maxHealth);
+
+	UE_LOG(LogTemp, Log, TEXT("Health changed: %s (+%s)"), *FString::SanitizeFloat(currentHealth), *FString::SanitizeFloat(Amount));
+
+	OnHealthChanged.Broadcast(this, currentHealth, -Amount, nullptr, nullptr, nullptr);
+}
+

@@ -53,9 +53,13 @@ public:
 	UFUNCTION()
 	void InitHealth(float health);
 
-	//Apply damage to unit
+	/** [DEPRECATED] Subtracts `damage` from `currentHealth` */
 	UFUNCTION()
 	void TakeDamage(float damage);
+
+	/** Changes the health by parameter */
+	UFUNCTION(BlueprintCallable, Category = "HealthComponent")
+	void AlterHealth(float Amount);
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnHealthChangedSignature OnHealthChanged;
