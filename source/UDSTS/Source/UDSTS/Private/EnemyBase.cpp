@@ -3,7 +3,7 @@
 #include "EnemyBase.h"
 
 // Sets default values
-AEnemyBase::AEnemyBase()
+AEnemyBase::AEnemyBase() : AUnitBase()
 {
 	// Set this pawn to call Tick() every frame.  You can t urn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -30,4 +30,16 @@ void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 void AEnemyBase::TakeDamage(float damage) {
 	Super::HealthComponent->TakeDamage(damage);
+}
+
+void AEnemyBase::DeathEvent()
+{
+	Destroy();
+
+	if (GEngine == nullptr)
+	{
+		return;
+	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Enemy is dead (EnemyTest)"));
 }

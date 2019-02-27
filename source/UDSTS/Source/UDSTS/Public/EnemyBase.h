@@ -20,9 +20,9 @@ public:
 	AEnemyBase();
 
 	UPROPERTY(VisibleAnywhere)
-		float movementSpeed;
+	float movementSpeed;
 	UPROPERTY(VisibleAnywhere)
-		float matter;
+	float matter;
 
 protected:
 	// Called when the game starts or when spawned
@@ -36,7 +36,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
-		void TakeDamage(float damage);
+	void TakeDamage(float damage);
 
+	UFUNCTION()
+	void DeathEvent();
 
 };
