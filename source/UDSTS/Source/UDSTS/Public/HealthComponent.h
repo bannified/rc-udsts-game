@@ -8,6 +8,9 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathEvent);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnHealthChangedSignature, UHealthComponent*, HealthComp, float, health, float, healthDelta, const class UDamageType*, DamageType, class AController*, InstigatedBy, AActor*, DamageCauser);
+
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UDSTS_API UHealthComponent : public UActorComponent
 {
@@ -17,10 +20,18 @@ public:
 	// Sets default values for this component's properties
 	UHealthComponent();
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HealthCompoenent")
+	float maxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HealthComponent")
 	float currentHealth;
-	UPROPERTY(VisibleAnywhere)
-	bool isDead;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HealthComponent")
+	bool bIsDead;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HealthComponent")
+	float startingHealth;
+
 	UPROPERTY(BlueprintAssignable, Category = "EventDispatchers")
 	FDeathEvent DeathEvent;
 
@@ -28,15 +39,21 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	//Initialize health with specified value
 	UFUNCTION()
-	void InitHealth(float startingHealth);
+	void InitHealth(float health);
+
 	//Apply damage to unit
 	UFUNCTION()
 	void TakeDamage(float damage);
-		
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnHealthChangedSignature OnHealthChanged;
 };

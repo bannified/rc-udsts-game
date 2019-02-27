@@ -21,6 +21,47 @@ void UHealthComponent::BeginPlay()
 }
 
 
+void UHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
+	if (Damage <= 0.0f || bIsDead)
+		return;
+
+	// avoid friendly fire
+	if (DamageCauser != DamagedActor) //&& IsFriendly(DamagedActor, DamageCauser))
+	{
+		return;
+	}
+
+	currentHealth = FMath::Clamp(currentHealth - Damage, 0.0f, maxHealth);
+
+	// FString converts to a char[], which is required by the TEXT
+	UE_LOG(LogTemp, Log, TEXT("Health changed: %s"), *FString::SanitizeFloat(currentHealth));
+
+	OnHealthChanged.Broadcast(this, currentHealth, Damage, DamageType, InstigatedBy, DamageCauser);
+
+	bIsDead = currentHealth <= 0.0f;
+
+	if (bIsDead)
+	{
+		DeathEvent.Broadcast();
+	}
+
+	// Networking code
+	//if (bIsDead)
+	//{
+	//	// this block will only run on server already anyway, since only server had Game Mode.
+	//	// but this if statement is just to cut off useless calls.
+	//	if (GetOwnerRole() == ROLE_Authority)
+	//	{
+	//		ASGameMode* gm = Cast<ASGameMode>(GetWorld()->GetAuthGameMode());
+	//		if (gm)
+	//		{
+	//			gm->OnActorKilled.Broadcast(GetOwner(), DamageCauser, InstigatedBy);
+	//		}
+	//	}
+	//}
+}
+
 // Called every frame
 void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -29,10 +70,10 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
-void UHealthComponent::InitHealth(float startingHealth)
+void UHealthComponent::InitHealth(float health)
 {
 	currentHealth = startingHealth;
-	isDead = false;
+	bIsDead = false;
 }
 
 void UHealthComponent::TakeDamage(float damage)
@@ -45,7 +86,7 @@ void UHealthComponent::TakeDamage(float damage)
 	else {
 		//Dead
 		currentHealth = 0.0f;
-		isDead = true;
+		bIsDead = true;
 		DeathEvent.Broadcast();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Is dead (HealthComponent)"));
 	}
