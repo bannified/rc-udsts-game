@@ -18,6 +18,17 @@ UHealthComponent::UHealthComponent()
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//if (GetOwnerRole() == ROLE_Authority)
+	//{
+		AActor* owner = GetOwner();
+		if (owner)
+		{
+			owner->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::HandleTakeAnyDamage);
+		}
+	//}
+
+	currentHealth = startingHealth;
 }
 
 
