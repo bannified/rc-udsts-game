@@ -62,6 +62,11 @@ void UHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 	//}
 }
 
+float UHealthComponent::GetHealth() const
+{
+	return currentHealth;
+}
+
 // Called every frame
 void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
