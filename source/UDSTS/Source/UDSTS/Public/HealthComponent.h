@@ -50,11 +50,11 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	//Initialize health with specified value
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "HealthComponent")
 	void InitHealth(float health);
 
 	/** [DEPRECATED] Subtracts `damage` from `currentHealth` */
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "HealthComponent")
 	void TakeDamage(float damage);
 
 	/** Changes the health by parameter */
