@@ -54,3 +54,8 @@ void AUDSGameModeBase::SetupSpawnPointGroups()
 		}
 	}
 }
+
+void AUDSGameModeBase::SpawnWithSpawnUnit(const FSpawnUnit spawnUnit)
+{
+
+}
