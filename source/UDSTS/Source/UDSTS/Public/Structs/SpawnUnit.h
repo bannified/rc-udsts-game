@@ -7,8 +7,7 @@ class USpawnUnitAsset;
 USTRUCT(BlueprintType)
 struct FSpawnUnit
 {
-	//GENERATED_BODY()
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Gameplay")
 	USpawnUnitAsset* SpawnUnitAsset;

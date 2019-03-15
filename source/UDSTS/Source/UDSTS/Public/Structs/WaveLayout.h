@@ -7,7 +7,7 @@
 USTRUCT(BlueprintType)
 struct FWaveLayout
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Description")
 	FString Name;
