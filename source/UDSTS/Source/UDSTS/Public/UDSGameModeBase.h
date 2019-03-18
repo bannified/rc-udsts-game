@@ -24,7 +24,7 @@ class UDSTS_API AUDSGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Level")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
 	TArray< FSpawnPointArray > SpawnPointsGroups;
 
 protected:
