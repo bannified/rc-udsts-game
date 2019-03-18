@@ -13,6 +13,10 @@ class UDSTS_API AGameModeState : public AInfo
 	GENERATED_BODY()
 
 public:
+
+	UPROPERTY(BlueprintReadWrite, Category = "Gameplay Data")
+		FName DisplayName;
+
 	/**
 	 * Called when the GameMode enters this state.
 	 */
