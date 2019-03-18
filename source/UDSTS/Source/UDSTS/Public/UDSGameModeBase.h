@@ -11,6 +11,10 @@
 
 class ULevelDataAsset;
 
+class AGameModeState;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameModeStateChanged, AGameModeState*, OldState, AGameModeState*, NewState);
+
 /**
  * 
  */
@@ -58,5 +62,21 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Spawn")
 	void SpawnWithSpawnUnit(const FSpawnUnit spawnUnit);
+
+	/**
+	 * State Machine
+	 */
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "State Machine")
+	AGameModeState* SavedState;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "State Machine")
+	AGameModeState* CurrentState;
+
+	UPROPERTY(BlueprintAssignable, Category = "State Machine")
+	FOnGameModeStateChanged OnStateChanged;
+
+	UFUNCTION(BlueprintCallable, Category = "State Machine")
+	void MoveToState(AGameModeState* NextState);
 
 };

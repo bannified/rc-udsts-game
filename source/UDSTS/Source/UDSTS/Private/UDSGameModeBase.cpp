@@ -2,6 +2,7 @@
 
 #include "UDSGameModeBase.h"
 #include "SpawnPoint.h"
+#include "GameModeState.h"
 #include "Kismet/GameplayStatics.h"
 
 void AUDSGameModeBase::BeginPlay()
@@ -58,4 +59,19 @@ void AUDSGameModeBase::SetupSpawnPointGroups()
 void AUDSGameModeBase::SpawnWithSpawnUnit(const FSpawnUnit spawnUnit)
 {
 
+}
+
+void AUDSGameModeBase::MoveToState(AGameModeState* NextState)
+{
+	AGameModeState* oldState = CurrentState;
+
+	CurrentState->OnStateStop(this);
+	CurrentState->OnStateExit(this);
+
+	CurrentState = NextState;
+
+	NextState->OnStateEnter(this);
+	NextState->OnStateStart(this);
+
+	OnStateChanged.Broadcast(oldState, CurrentState);
 }
