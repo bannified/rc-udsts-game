@@ -18,4 +18,7 @@ struct FWaveLayout
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Gameplay")
 	TArray< FSpawnUnit > SpawnUnits;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Gameplay")
+	float SetupTime;
+
 };
