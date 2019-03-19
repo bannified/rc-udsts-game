@@ -20,33 +20,48 @@ public:
 	/**
 	 * Called when the GameMode enters this state.
 	 */
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
-		void OnStateEnter(AUDSGameModeBase* GameMode);
+	UFUNCTION(BlueprintCallable, Category = "Game Mode State")
+	virtual void OnStateEnter(AUDSGameModeBase* GameMode);
 
 	/**
 	 * Called whenever this states starts executing.
 	 * Therefore, this method is called even when the GameMode is resumed (but still in this state).
 	 */
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
-		void OnStateStart(AUDSGameModeBase* GameMode);
+	UFUNCTION(BlueprintCallable, Category = "Game Mode State")
+	virtual void OnStateStart(AUDSGameModeBase* GameMode);
 
 	/**
 	 * Called every tick when this GameMode is active with this state.
 	 */
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
-		void OnStateTick(AUDSGameModeBase* GameMode, float DeltaTime);
+	UFUNCTION(BlueprintCallable, Category = "Game Mode State")
+	virtual void OnStateTick(AUDSGameModeBase* GameMode, float DeltaTime);
 
 	/**
 	 * Called when state stops.
 	 * Therefore, this method is called even when the GameMode is paused (but still in this state).
 	 */
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
-		void OnStateStop(AUDSGameModeBase* GameMode);
+	UFUNCTION(BlueprintCallable, Category = "Game Mode State")
+	virtual void OnStateStop(AUDSGameModeBase* GameMode);
 
 	/**
 	 * Called when GameMode exits this state.
 	 */
+	UFUNCTION(BlueprintCallable, Category = "Game Mode State")
+	virtual void OnStateExit(AUDSGameModeBase* GameMode);
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
-		void OnStateExit(AUDSGameModeBase* GameMode);
+	void ReceiveOnStateEnter(AUDSGameModeBase* GameMode);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
+	void ReceiveOnStateStart(AUDSGameModeBase* GameMode);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
+	void ReceiveOnStateTick(AUDSGameModeBase* GameMode, const float DeltaTime);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
+	void ReceiveOnStateStop(AUDSGameModeBase* GameMode);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Game Mode State")
+	void ReceiveOnStateExit(AUDSGameModeBase* GameMode);
 
 };
