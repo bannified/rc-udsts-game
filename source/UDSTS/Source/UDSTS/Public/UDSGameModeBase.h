@@ -27,6 +27,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
 	TArray< FSpawnPointArray > SpawnPointsGroups;
 
+	UFUNCTION(BlueprintCallable, Category = "State Machine")
+	void MoveToState(AGameModeState* NextState);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -76,7 +79,6 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "State Machine")
 	FOnGameModeStateChanged OnStateChanged;
 
-	UFUNCTION(BlueprintCallable, Category = "State Machine")
-	void MoveToState(AGameModeState* NextState);
+	
 
 };
