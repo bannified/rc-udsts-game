@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UStaticMeshComponent;
+class UHealthComponent;
 
 UCLASS()
 class UDSTS_API ABase : public AActor
@@ -35,6 +36,8 @@ protected:
 	float StartingHealth;
 
 	//TODO: Add Health Component (after C++ is done)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Gameplay")
+	UHealthComponent* HealthComponent;
 
 public:	
 	// Called every frame

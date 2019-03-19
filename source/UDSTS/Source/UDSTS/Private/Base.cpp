@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Base.h"
+#include "HealthComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 
@@ -38,7 +39,7 @@ ABase::ABase()
 
 	DamageTriggerCollider->Bounds.SphereRadius = 450.0f;
 
-	//TODO: Add Health Component
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 
 }
 
@@ -46,7 +47,8 @@ ABase::ABase()
 void ABase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	HealthComponent->InitHealth(StartingHealth);
 }
 
 // Called every frame
