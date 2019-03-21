@@ -9,6 +9,8 @@
 
 class AUDSGameModeBase;
 
+class AWaveGameModeState;
+
 /**
  * 
  */
@@ -22,7 +24,7 @@ public:
 	FKey SkipButton;
 
 	UFUNCTION(BlueprintCallable, Category = "StateMachine")
-	void Init(FWaveLayout WaveLayout);
+	void Init(FWaveLayout WaveLayout, TSubclassOf<AWaveGameModeState> WaveGameModeStateClass);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	float RunningTime;
@@ -40,4 +42,8 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable, Category = "StateMachine")
 	void TransitionToWave(AUDSGameModeBase* GameMode);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Gameplay")
+	TSubclassOf<AWaveGameModeState> WaveGameModeStateClass;
+	
 };

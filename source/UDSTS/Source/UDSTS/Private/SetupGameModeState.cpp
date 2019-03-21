@@ -6,11 +6,12 @@
 #include "UDSGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
-void ASetupGameModeState::Init(FWaveLayout WaveLayout)
+void ASetupGameModeState::Init(FWaveLayout WaveLayout, TSubclassOf<AWaveGameModeState> WaveGameModeStateClass)
 {
 	RunningTime = 0;
 	UpcomingWave = WaveLayout;
 	SetupTime = UpcomingWave.SetupTime;
+	SkipButton = FKey(FName("SpaceBar"));
 }
 
 void ASetupGameModeState::OnStateTick(AUDSGameModeBase* GameMode, const float DeltaTime)
@@ -36,7 +37,7 @@ void ASetupGameModeState::OnStateExit(AUDSGameModeBase* GameMode)
 void ASetupGameModeState::TransitionToWave(AUDSGameModeBase* GameMode)
 {
 	FActorSpawnParameters SpawnInfo;
-	AWaveGameModeState* waveState = GetWorld()->SpawnActor<AWaveGameModeState>(AWaveGameModeState::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, SpawnInfo);
+	AWaveGameModeState* waveState = GetWorld()->SpawnActor<AWaveGameModeState>(WaveGameModeStateClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnInfo);
 
 	waveState->Init(UpcomingWave);
 

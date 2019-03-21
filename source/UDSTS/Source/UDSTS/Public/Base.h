@@ -19,6 +19,9 @@ public:
 	// Sets default values for this actor's properties
 	ABase();
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Gameplay")
+	UHealthComponent* HealthComponent;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,11 +36,7 @@ protected:
 	USphereComponent* DamageTriggerCollider;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-	float StartingHealth;
-
-	//TODO: Add Health Component (after C++ is done)
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Gameplay")
-	UHealthComponent* HealthComponent;
+	float StartingHealth;	
 
 public:	
 	// Called every frame

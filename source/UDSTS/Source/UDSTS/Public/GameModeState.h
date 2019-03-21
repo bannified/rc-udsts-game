@@ -34,7 +34,7 @@ public:
 	 * Called every tick when this GameMode is active with this state.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Game Mode State")
-	virtual void OnStateTick(AUDSGameModeBase* GameMode, float DeltaTime);
+	virtual void OnStateTick(AUDSGameModeBase* GameMode, const float DeltaTime);
 
 	/**
 	 * Called when state stops.
