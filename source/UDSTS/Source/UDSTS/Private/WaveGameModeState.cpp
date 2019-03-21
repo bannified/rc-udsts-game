@@ -56,12 +56,14 @@ void AWaveGameModeState::SpawnQueryFinished(TSharedPtr<FEnvQueryResult> Result)
 	}
 }
 
-void AWaveGameModeState::SpawnWithSpawnUnit(FSpawnUnit SpawnUnit)
+void AWaveGameModeState::SpawnWithSpawnUnit(AUDSGameModeBase* GameMode, FSpawnUnit SpawnUnit)
 {
 	if (SpawnUnit.SpawnUnitAsset == nullptr)
 	{
 		return;
 	}
+
+	GameMode->NextSpawnUnit = SpawnUnit;
 
 	FEnvQueryRequest request = FEnvQueryRequest(SpawnQuery, SpawnUnit.SpawnUnitAsset);
 	request.SetWorldOverride(GetWorld());
@@ -88,7 +90,7 @@ void AWaveGameModeState::OnStateTick(AUDSGameModeBase* GameMode, const float Del
 		// there's still units left to spawn.
 		if (RunningTime >= SpawnUnits[CurrentSpawnUnitIndex].TimeToSpawn)
 		{
-			SpawnWithSpawnUnit(SpawnUnits[CurrentSpawnUnitIndex]);
+			SpawnWithSpawnUnit(GameMode, SpawnUnits[CurrentSpawnUnitIndex]);
 			CurrentSpawnUnitIndex++;
 			if (CurrentSpawnUnitIndex >= SpawnUnits.Num())
 			{

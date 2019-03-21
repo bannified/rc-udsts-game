@@ -34,7 +34,7 @@ public:
 	void SpawnQueryFinished(TSharedPtr<FEnvQueryResult> Result);
 
 	UFUNCTION(BlueprintCallable, Category = "WaveState")
-	void SpawnWithSpawnUnit(FSpawnUnit SpawnUnit);
+	void SpawnWithSpawnUnit(AUDSGameModeBase* GameMode, FSpawnUnit SpawnUnit);
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
 	FWaveCleared WaveClearedEvent;

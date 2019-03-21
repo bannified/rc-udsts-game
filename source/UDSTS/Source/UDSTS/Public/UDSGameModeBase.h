@@ -64,6 +64,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Entities")
 	void HandleEnemySpawn(AActor* SpawnedEnemy);
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
+	FSpawnUnit NextSpawnUnit;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -99,9 +102,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
 	int CurrentWaveIndex;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
-	FSpawnUnit NextSpawnUnit;
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetupSpawnPointGroups();
