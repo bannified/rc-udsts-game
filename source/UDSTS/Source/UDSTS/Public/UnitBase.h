@@ -7,6 +7,7 @@
 #include "UnitBase.generated.h"
 
 class USkeletalMeshComponent;
+class UCapsuleComponent;
 class UFloatingPawnMovement;
 class UBehaviorTree;
 class UMeshComponent;
@@ -22,6 +23,9 @@ public:
 	AUnitBase();
 
 protected:
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UCapsuleComponent* CapsuleComponent;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
 	USkeletalMeshComponent* MainMesh;
