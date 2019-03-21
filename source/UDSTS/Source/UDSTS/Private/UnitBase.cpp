@@ -16,6 +16,10 @@ AUnitBase::AUnitBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
+	CapsuleComponent->SetCanEverAffectNavigation(false);
+	CapsuleComponent->SetCollisionObjectType(ECC_WorldDynamic);
+	CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CapsuleComponent->SetCollisionProfileName(FName("BlockAllDynamic"));
 
 	SetRootComponent(CapsuleComponent);
 
