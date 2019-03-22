@@ -24,16 +24,16 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UCapsuleComponent* CapsuleComponent;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
 	USkeletalMeshComponent* MainMesh;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
 	UFloatingPawnMovement* FloatingPawnMovement;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
 	UHealthComponent* HealthComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
