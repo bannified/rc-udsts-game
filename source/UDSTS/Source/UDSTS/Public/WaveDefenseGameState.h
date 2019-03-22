@@ -24,6 +24,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scorekeeping")
 	int32 EnemiesLeft;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scorekeeping")
+	int32 EnemiesLeaked;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game World")
 	ABase* BaseOfInterest;
 };
