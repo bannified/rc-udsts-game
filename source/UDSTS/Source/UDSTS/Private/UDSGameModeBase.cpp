@@ -194,12 +194,16 @@ void AUDSGameModeBase::WinGame()
 {
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Win Game!"));
+
+	OnGameWin.Broadcast();
 }
 
 void AUDSGameModeBase::LoseGame()
 {
 	if (GEngine)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Lose Game!"));
+
+	OnGameLose.Broadcast();
 }
 
 void AUDSGameModeBase::OnEnemyDestroyed(AActor* EnemyDestroyed)
