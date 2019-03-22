@@ -15,8 +15,16 @@ AUnitBase::AUnitBase()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
+	CapsuleComponent->SetCanEverAffectNavigation(false);
+	CapsuleComponent->SetCollisionObjectType(ECC_WorldDynamic);
+	CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	CapsuleComponent->SetCollisionProfileName(FName("BlockAllDynamic"));
+
+	SetRootComponent(CapsuleComponent);
+
 	MainMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MainMesh"));
-	SetRootComponent(MainMesh);
+	MainMesh->SetupAttachment(CapsuleComponent);
 
 	MainMesh->SetCanEverAffectNavigation(false);
 	MainMesh->SetCollisionObjectType(ECC_WorldDynamic);
