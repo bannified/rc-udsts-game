@@ -8,6 +8,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathEvent);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnDeathSignature, AActor*, Victim, AActor*, Killer);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnHealthChangedSignature, UHealthComponent*, HealthComp, float, health, float, healthDelta, const class UDamageType*, DamageType, class AController*, InstigatedBy, AActor*, DamageCauser);
 
 
@@ -63,4 +65,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnHealthChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnDeathSignature OnDeathEvent;
 };
