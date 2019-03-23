@@ -19,10 +19,13 @@ public:
 	// Sets default values for this pawn's properties
 	AEnemyBase();
 
-	UPROPERTY(VisibleAnywhere)
-	float movementSpeed;
-	UPROPERTY(VisibleAnywhere)
-	float matter;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	float MovementSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	float Matter;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	float Damage;
 
 protected:
 	// Called when the game starts or when spawned
@@ -34,9 +37,6 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	UFUNCTION()
-	void TakeDamage(float damage);
 
 	UFUNCTION()
 	void DeathEvent();

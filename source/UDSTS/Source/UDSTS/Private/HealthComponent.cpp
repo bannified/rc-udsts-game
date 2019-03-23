@@ -37,11 +37,11 @@ void UHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 	if (Damage <= 0.0f || bIsDead)
 		return;
 
-	// avoid friendly fire
-	if (DamageCauser != DamagedActor) //&& IsFriendly(DamagedActor, DamageCauser))
-	{
-		return;
-	}
+	//// avoid friendly fire
+	//if (DamageCauser == DamagedActor) //&& IsFriendly(DamagedActor, DamageCauser))
+	//{
+	//	return;
+	//}
 
 	currentHealth = FMath::Clamp(currentHealth - Damage, 0.0f, maxHealth);
 
@@ -54,6 +54,7 @@ void UHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, c
 
 	if (bIsDead)
 	{
+		OnDeathEvent.Broadcast(DamagedActor, DamageCauser);
 		DeathEvent.Broadcast();
 	}
 
@@ -96,7 +97,7 @@ void UHealthComponent::TakeDamage(float damage)
 {
 	currentHealth -= damage;
 
-	if (currentHealth >= 0.0f) {
+	if (currentHealth > 0.0f) {
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::SanitizeFloat(currentHealth));
 	}
 	else {
