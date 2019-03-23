@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	float Damage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reference")
+	AActor* TargetWaypoint;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

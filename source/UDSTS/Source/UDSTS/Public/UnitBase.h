@@ -30,7 +30,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
 	USkeletalMeshComponent* MainMesh;
 
-	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
 	UFloatingPawnMovement* FloatingPawnMovement;
 
 	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
