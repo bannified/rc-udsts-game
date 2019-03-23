@@ -78,11 +78,7 @@ void ACharacterBase::MoveRight(float value)
 
 void ACharacterBase::MoveUp(float value)
 {
-	//Super::AddMovementInput(FVector(0.0, 0.0, VerticalSwimScale), value);
-
 	GetCharacterMovement()->AddForce(FVector(0.0, 0.0, value * VerticalSwimForce));
-
-	//AddMovementInput(FVector(0.0, 0.0, 1.0), value);
 }
 
 void ACharacterBase::Boost_Action()
