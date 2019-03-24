@@ -28,10 +28,6 @@ void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
-void AEnemyBase::TakeDamage(float damage) {
-	Super::HealthComponent->TakeDamage(damage);
-}
-
 void AEnemyBase::DeathEvent()
 {
 	Destroy();
