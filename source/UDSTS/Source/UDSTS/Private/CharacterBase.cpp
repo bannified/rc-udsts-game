@@ -29,6 +29,8 @@ ACharacterBase::ACharacterBase()
 	HorizontalSwimScale = 1.0f;
 	VerticalSwimScale = 1.0f;
 
+	VerticalSwimForce = 300.0f;
+
 	LeftBoosterSocketName = FName("booster_l");
 	RightBoosterSocketName = FName("booster_r");
 
@@ -53,7 +55,7 @@ void ACharacterBase::MoveForward(float value)
 	rot.Roll = 0;
 
 	FVector resultVector = UKismetMathLibrary::GetForwardVector(rot);
-	resultVector.Y *= VerticalSwimScale;
+	resultVector.Z *= VerticalSwimScale;
 	resultVector.X *= HorizontalSwimScale;
 
 	AddMovementInput(resultVector, value);
@@ -66,17 +68,17 @@ void ACharacterBase::MoveRight(float value)
 	UKismetMathLibrary::BreakRotator(GetControlRotation(), rot.Roll, rot.Pitch, rot.Yaw);
 	rot.Roll = 0;
 
-	FVector resultVector = UKismetMathLibrary::GetForwardVector(rot);
+	FVector resultVector = UKismetMathLibrary::GetRightVector(rot);
 
-	resultVector.Y *= VerticalSwimScale;
+	resultVector.Z *= VerticalSwimScale;
 	resultVector.X *= HorizontalSwimScale;
 
-	AddMovementInput(UKismetMathLibrary::GetRightVector(rot), value);
+	AddMovementInput(resultVector, value);
 }
 
 void ACharacterBase::MoveUp(float value)
 {
-	Super::AddMovementInput(FVector(0.0, 0.0, VerticalSwimScale), value);
+	GetCharacterMovement()->AddForce(FVector(0.0, 0.0, value * VerticalSwimForce));
 }
 
 void ACharacterBase::Boost_Action()

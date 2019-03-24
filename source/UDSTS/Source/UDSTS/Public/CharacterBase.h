@@ -74,6 +74,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (ClampMin = "0.0", ClampMax = "1.0"))
 	float HorizontalSwimScale;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float VerticalSwimForce;
+
 	/**
 	 * Visual/Sound Effects
 	 */
