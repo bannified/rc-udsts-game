@@ -9,6 +9,8 @@
 class UCameraComponent;
 class USpringArmComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBoostEvent, ACharacterBase*, Charater);
+
 UCLASS()
 class UDSTS_API ACharacterBase : public ACharacter
 {
@@ -83,14 +85,24 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 	USoundBase* BoosterSound;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Visuals")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals")
+	FVector BoosterParticleScale;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Visuals")
 	UParticleSystem* BoosterParticleSystem;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Visuals")
-	FName LeftBoosterSocketName;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals")
+	FName BoosterEndSocketName;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Visuals")
-	FName RightBoosterSocketName;
+	UPROPERTY(BlueprintAssignable, Category = "EventDispatchers")
+	FBoostEvent OnBoostActivated;
+
+	UPROPERTY(BlueprintAssignable, Category = "EventDispatchers")
+	FBoostEvent OnBoostOffCooldown;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals")
+	FName NozzleEndSocketName;
+
 
 public:	
 	// Called every frame
