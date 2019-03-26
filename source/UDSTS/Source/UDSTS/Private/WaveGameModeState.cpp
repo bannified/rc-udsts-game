@@ -25,8 +25,8 @@ void AWaveGameModeState::Init(FWaveLayout WaveLayout)
 
 void AWaveGameModeState::SpawnQueryFinished(TSharedPtr<FEnvQueryResult> Result)
 {
-	USpawnUnitAsset* spawnUnitAsset = Cast<USpawnUnitAsset>(Result->Owner);
-	if (spawnUnitAsset == nullptr)
+	USpawnUnitAsset* spawnUnit = Cast<USpawnUnitAsset>(Result->Owner);
+	if (spawnUnit == nullptr)
 	{
 		return;
 	}
@@ -40,12 +40,13 @@ void AWaveGameModeState::SpawnQueryFinished(TSharedPtr<FEnvQueryResult> Result)
 			{
 				FActorSpawnParameters SpawnInfo;
 				SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-				AUnitBase* unit = GetWorld()->SpawnActor<AUnitBase>(spawnUnitAsset->UnitBase, locations[0], FRotator::ZeroRotator, SpawnInfo);
+				AUnitBase* unit = GetWorld()->SpawnActor<AUnitBase>(spawnUnit->UnitBase, locations[0], FRotator::ZeroRotator, SpawnInfo);
 				if (unit != nullptr)
 				{
 					FVector origin, boxExtent;
 					unit->GetActorBounds(false, origin, boxExtent);
 					unit->AddActorWorldOffset(FVector(0, 0, boxExtent.Z));
+					spawnUnit->InitializeUnit(unit);
 					// TODO: Invoke ISpawnable (if this interface gets made)
 					OnEnemyUnitSpawned.Broadcast(unit);
 				}
