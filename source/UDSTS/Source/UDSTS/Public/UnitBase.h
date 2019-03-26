@@ -12,6 +12,7 @@ class UFloatingPawnMovement;
 class UBehaviorTree;
 class UMeshComponent;
 class UHealthComponent;
+class USpawnUnitAsset;
 
 UCLASS()
 class UDSTS_API AUnitBase : public APawn
@@ -37,12 +38,16 @@ protected:
 	UHealthComponent* HealthComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
-	UBehaviorTree* UnitBehaviorTreeAsset;
+	UBehaviorTree* UnitBehaviorTreeAsset;	
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	USpawnUnitAsset* SpawnUnitAsset;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
