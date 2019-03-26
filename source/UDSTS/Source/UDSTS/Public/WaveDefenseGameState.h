@@ -29,4 +29,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game World")
 	ABase* BaseOfInterest;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game World")
+	TArray< ABase* > BasesInLevel;
 };

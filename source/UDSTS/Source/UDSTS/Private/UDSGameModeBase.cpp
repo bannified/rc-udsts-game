@@ -128,6 +128,18 @@ void AUDSGameModeBase::StartGame(ULevelDataAsset* LevelData)
 		{
 			gs->BaseOfInterest = base;
 		}
+
+		gs->BasesInLevel.Reserve(baseArr.Num()); // pre-allocate space
+
+		for (auto actor : baseArr)
+		{
+			ABase* base = Cast<ABase>(actor);
+			if (base)
+			{
+				gs->BasesInLevel.Add(base);
+			}
+		}
+
 	}
 
 	if (GameHUDWidget != nullptr)
