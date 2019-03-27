@@ -20,6 +20,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Gameplay")
 	TSubclassOf<AUnitBase> UnitBase;
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Gameplay")
-	TMap< FString, float > SpawnFloatParametersMap;
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "UnitMod")
+	void InitializeUnit(AActor* Actor);
 };
