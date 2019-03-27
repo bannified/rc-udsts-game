@@ -182,6 +182,8 @@ void AUDSGameModeBase::NextWave()
 		setupState->Init(MapLevelDataAsset->Waves[CurrentWaveIndex], WaveGameModeStateClass);
 
 		MoveToState(setupState);
+
+		OnNextWave.Broadcast();
 	}
 	else
 	{

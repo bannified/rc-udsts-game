@@ -69,11 +69,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
 	FSpawnUnit NextSpawnUnit;
 
-	UPROPERTY(BlueprintAssignable, Category = "Events")
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
 	FOnGameEnd OnGameWin;
 
-	UPROPERTY(BlueprintAssignable, Category = "Events")
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
 	FOnGameEnd OnGameLose;
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
+	FOnGameEnd OnNextWave;
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
+	FOnGameEnd OnWaveCleared;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level")
 	bool b_GameWon = false;
