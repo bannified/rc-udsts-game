@@ -7,6 +7,7 @@
 #include "WaveDefenseGameState.generated.h"
 
 class ABase;
+class USpawnUnitAsset;
 
 /**
  * 
@@ -32,4 +33,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game World")
 	TArray< ABase* > BasesInLevel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scorekeeping")
+	TMap< USpawnUnitAsset*, int32 > SpawnUnitToKillCountMap;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scorekeeping")
+	TMap< USpawnUnitAsset*, int32 > SpawnUnitToLeakCountMap;
 };
