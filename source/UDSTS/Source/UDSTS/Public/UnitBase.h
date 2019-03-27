@@ -23,6 +23,9 @@ public:
 	// Sets default values for this pawn's properties
 	AUnitBase();
 
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
+	UHealthComponent* HealthComponent;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
@@ -32,10 +35,7 @@ protected:
 	USkeletalMeshComponent* MainMesh;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
-	UFloatingPawnMovement* FloatingPawnMovement;
-
-	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
-	UHealthComponent* HealthComponent;
+	UFloatingPawnMovement* FloatingPawnMovement;	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 	UBehaviorTree* UnitBehaviorTreeAsset;	
