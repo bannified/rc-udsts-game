@@ -25,8 +25,8 @@ void AWaveGameModeState::Init(FWaveLayout WaveLayout)
 
 void AWaveGameModeState::SpawnQueryFinished(TSharedPtr<FEnvQueryResult> Result)
 {
-	USpawnUnitAsset* spawnUnitAsset = Cast<USpawnUnitAsset>(Result->Owner);
-	if (spawnUnitAsset == nullptr)
+	USpawnUnitAsset* spawnUnit = Cast<USpawnUnitAsset>(Result->Owner);
+	if (spawnUnit == nullptr)
 	{
 		return;
 	}
@@ -38,17 +38,7 @@ void AWaveGameModeState::SpawnQueryFinished(TSharedPtr<FEnvQueryResult> Result)
 			Result->GetAllAsLocations(locations);
 			if (locations.Num() > 0)
 			{
-				FActorSpawnParameters SpawnInfo;
-				SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-				AUnitBase* unit = GetWorld()->SpawnActor<AUnitBase>(spawnUnitAsset->UnitBase, locations[0], FRotator::ZeroRotator, SpawnInfo);
-				if (unit != nullptr)
-				{
-					FVector origin, boxExtent;
-					unit->GetActorBounds(false, origin, boxExtent);
-					unit->AddActorWorldOffset(FVector(0, 0, boxExtent.Z));
-					// TODO: Invoke ISpawnable (if this interface gets made)
-					OnEnemyUnitSpawned.Broadcast(unit);
-				}
+				SpawnWithSpawnUnitAssetAtLocation(spawnUnit, locations[0]);
 			}
 			break;
 		default:
@@ -68,6 +58,22 @@ void AWaveGameModeState::SpawnWithSpawnUnit(AUDSGameModeBase* GameMode, FSpawnUn
 	FEnvQueryRequest request = FEnvQueryRequest(SpawnQuery, SpawnUnit.SpawnUnitAsset);
 	request.SetWorldOverride(GetWorld());
 	request.Execute(EEnvQueryRunMode::RandomBest25Pct, this, &AWaveGameModeState::SpawnQueryFinished);
+}
+
+void AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* SpawnUnitAsset, const FVector location)
+{
+	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	AUnitBase* unit = GetWorld()->SpawnActor<AUnitBase>(SpawnUnitAsset->UnitBase, location, FRotator::ZeroRotator, SpawnInfo);
+	if (unit != nullptr)
+	{
+		FVector origin, boxExtent;
+		unit->GetActorBounds(false, origin, boxExtent);
+		unit->AddActorWorldOffset(FVector(0, 0, boxExtent.Z));
+		SpawnUnitAsset->InitializeUnit(unit);
+		// TODO: Invoke ISpawnable (if this interface gets made)
+		OnEnemyUnitSpawned.Broadcast(unit);
+	}
 }
 
 void AWaveGameModeState::OnStateEnter(AUDSGameModeBase* GameMode)

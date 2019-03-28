@@ -21,6 +21,8 @@ class AWaveGameModeState;
 
 class ASetupGameModeState;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameEnd);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameModeStateChanged, AGameModeState*, OldState, AGameModeState*, NewState);
 
 /**
@@ -66,6 +68,15 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
 	FSpawnUnit NextSpawnUnit;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnGameEnd OnGameWin;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnGameEnd OnGameLose;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level")
+	bool b_GameWon = false;
 
 protected:
 	// Called when the game starts or when spawned
