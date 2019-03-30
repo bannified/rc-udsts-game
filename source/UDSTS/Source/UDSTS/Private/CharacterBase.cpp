@@ -31,8 +31,9 @@ ACharacterBase::ACharacterBase()
 
 	VerticalSwimForce = 300.0f;
 
-	LeftBoosterSocketName = FName("booster_l");
-	RightBoosterSocketName = FName("booster_r");
+	BoosterEndSocketName = "booster_end";
+
+	NozzleEndSocketName = "nozzle_end";
 
 	Boost_Force = 1000.0f;
 	Boost_Cooldown = 10.0f;
@@ -102,21 +103,22 @@ void ACharacterBase::Boost_Action()
 
 	if (BoosterParticleSystem != nullptr)
 	{
-		UGameplayStatics::SpawnEmitterAttached(BoosterParticleSystem, GetMesh(), LeftBoosterSocketName, FVector::ZeroVector, FRotator::ZeroRotator, FVector(0.5, 0.5, 0.5), EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::AutoRelease);
-		UGameplayStatics::SpawnEmitterAttached(BoosterParticleSystem, GetMesh(), RightBoosterSocketName, FVector::ZeroVector, FRotator::ZeroRotator, FVector(0.5, 0.5, 0.5), EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::AutoRelease);
+		UGameplayStatics::SpawnEmitterAttached(BoosterParticleSystem, GetMesh(), BoosterEndSocketName, FVector::ZeroVector, FRotator::ZeroRotator, BoosterParticleScale, EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::AutoRelease);
 	}
 
 	if (BoosterSound != nullptr)
 	{
-		UGameplayStatics::SpawnSoundAttached(BoosterSound, GetMesh(), LeftBoosterSocketName, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset, false, 0.5f);
-		UGameplayStatics::SpawnSoundAttached(BoosterSound, GetMesh(), RightBoosterSocketName, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset, false, 0.5f);
+		UGameplayStatics::SpawnSoundAttached(BoosterSound, GetMesh(), BoosterEndSocketName, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset, false, 0.5f);
 	}
 
 	this->b_CanBoost = false;
 
+	OnBoostActivated.Broadcast(this);
+
 	GetWorldTimerManager().SetTimer(Boost_Cooldown_TimerHandle, [&]()
 	{
 		this->b_CanBoost = true;
+		OnBoostOffCooldown.Broadcast(this);
 	}, Boost_Cooldown, false);
 }
 
