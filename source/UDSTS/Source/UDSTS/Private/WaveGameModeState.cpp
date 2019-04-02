@@ -85,7 +85,7 @@ void AWaveGameModeState::OnStateEnter(AUDSGameModeBase* GameMode)
 
 void AWaveGameModeState::OnStateStart(AUDSGameModeBase* GameMode)
 {
-	WaveClearedEvent.AddDynamic(GameMode, &AUDSGameModeBase::NextWave);
+	//WaveClearedEvent.AddDynamic(GameMode, &AUDSGameModeBase::NextWave);
 	OnEnemyUnitSpawned.AddDynamic(GameMode, &AUDSGameModeBase::HandleEnemySpawn);
 
 	ReceiveOnStateStart(GameMode);
@@ -126,7 +126,7 @@ void AWaveGameModeState::OnStateTick(AUDSGameModeBase* GameMode, const float Del
 
 void AWaveGameModeState::OnStateStop(AUDSGameModeBase* GameMode)
 {
-	WaveClearedEvent.RemoveDynamic(GameMode, &AUDSGameModeBase::NextWave);
+	//WaveClearedEvent.RemoveDynamic(GameMode, &AUDSGameModeBase::NextWave);
 	OnEnemyUnitSpawned.RemoveDynamic(GameMode, &AUDSGameModeBase::HandleEnemySpawn);
 
 	ReceiveOnStateStop(GameMode);
