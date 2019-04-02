@@ -211,8 +211,8 @@ void AUDSGameModeBase::NextWave()
 
 void AUDSGameModeBase::WinGame()
 {
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Win Game!"));
+	//if (GEngine)
+		//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Win Game!"));
 
 	if (!b_GameWon)
 	{
