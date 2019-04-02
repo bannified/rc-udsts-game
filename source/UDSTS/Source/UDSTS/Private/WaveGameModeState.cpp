@@ -70,6 +70,7 @@ void AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* Spaw
 		FVector origin, boxExtent;
 		unit->GetActorBounds(false, origin, boxExtent);
 		unit->AddActorWorldOffset(FVector(0, 0, boxExtent.Z));
+		unit->SpawnUnitAsset = SpawnUnitAsset;
 		SpawnUnitAsset->InitializeUnit(unit);
 		// TODO: Invoke ISpawnable (if this interface gets made)
 		OnEnemyUnitSpawned.Broadcast(unit);

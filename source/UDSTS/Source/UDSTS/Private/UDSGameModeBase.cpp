@@ -9,6 +9,7 @@
 #include "Blueprint/UserWidget.h"
 #include "WaveDefenseGameState.h"
 #include "SetupGameModeState.h"
+#include "CharacterBase.h"
 #include "EnemyBase.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -35,6 +36,9 @@ void AUDSGameModeBase::BeginPlay()
 			}
 		}
 	}
+
+	gs->SpawnUnitToLeakCountMap = TMap< USpawnUnitAsset*, int32 >();
+	gs->SpawnUnitToKillCountMap = TMap< USpawnUnitAsset*, int32 >();
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -128,6 +132,19 @@ void AUDSGameModeBase::StartGame(ULevelDataAsset* LevelData)
 		{
 			gs->BaseOfInterest = base;
 		}
+
+		gs->BasesInLevel.Reserve(baseArr.Num()); // pre-allocate space
+
+		for (auto actor : baseArr)
+		{
+			ABase* base = Cast<ABase>(actor);
+			if (base)
+			{
+				gs->BasesInLevel.Add(base);
+				base->OnTakeAnyDamage.AddDynamic(this, &AUDSGameModeBase::OnBaseTakeDamage);
+			}
+		}
+
 	}
 
 	if (GameHUDWidget != nullptr)
@@ -226,6 +243,56 @@ void AUDSGameModeBase::HandleEnemySpawn(AActor* SpawnedEnemy)
 	AWaveDefenseGameState* gs = GetGameState<AWaveDefenseGameState>();
 
 	SpawnedEnemy->OnDestroyed.AddDynamic(this, &AUDSGameModeBase::OnEnemyDestroyed);
+	
+	AUnitBase* unit = Cast<AUnitBase>(SpawnedEnemy);
+	if (unit)
+	{
+		unit->HealthComponent->OnDeathEvent.AddDynamic(this, &AUDSGameModeBase::OnEnemyDeath);
+	}
 
 	gs->EnemiesLeft++;
+}
+
+void AUDSGameModeBase::OnEnemyDeath(AActor* Victim, AActor* Killer)
+{
+	AWaveDefenseGameState* gs = GetGameState<AWaveDefenseGameState>();	
+
+	if (gs)
+	{
+		AUnitBase* unit = Cast<AUnitBase>(Victim);
+		ACharacterBase* character = Cast<ACharacterBase>(Killer);
+
+		if (character && unit)
+		{
+			if (!gs->SpawnUnitToKillCountMap.Contains(unit->SpawnUnitAsset))
+			{
+				gs->SpawnUnitToKillCountMap.Add(unit->SpawnUnitAsset, 0);			
+			}
+
+			gs->SpawnUnitToKillCountMap[unit->SpawnUnitAsset]++;
+
+			unit->HealthComponent->OnDeathEvent.RemoveDynamic(this, &AUDSGameModeBase::OnEnemyDeath);
+		}
+	}
+}
+
+void AUDSGameModeBase::OnBaseTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
+	AWaveDefenseGameState* gs = GetGameState<AWaveDefenseGameState>();
+
+	if (gs)
+	{
+		AEnemyBase* unit = Cast<AEnemyBase>(DamageCauser);
+		ABase* base = Cast<ABase>(DamagedActor);
+
+		if (base && unit && Damage > 0)
+		{
+			if (!gs->SpawnUnitToLeakCountMap.Contains(unit->SpawnUnitAsset))
+			{
+				gs->SpawnUnitToLeakCountMap.Add(unit->SpawnUnitAsset, 0);
+			}
+
+			gs->SpawnUnitToLeakCountMap[unit->SpawnUnitAsset]++;
+		}
+	}
 }

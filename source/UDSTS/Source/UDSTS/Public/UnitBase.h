@@ -12,6 +12,7 @@ class UFloatingPawnMovement;
 class UBehaviorTree;
 class UMeshComponent;
 class UHealthComponent;
+class USpawnUnitAsset;
 
 UCLASS()
 class UDSTS_API AUnitBase : public APawn
@@ -22,6 +23,9 @@ public:
 	// Sets default values for this pawn's properties
 	AUnitBase();
 
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
+	UHealthComponent* HealthComponent;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
@@ -31,18 +35,19 @@ protected:
 	USkeletalMeshComponent* MainMesh;
 
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = "Components")
-	UFloatingPawnMovement* FloatingPawnMovement;
-
-	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
-	UHealthComponent* HealthComponent;
+	UFloatingPawnMovement* FloatingPawnMovement;	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
-	UBehaviorTree* UnitBehaviorTreeAsset;
+	UBehaviorTree* UnitBehaviorTreeAsset;	
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	USpawnUnitAsset* SpawnUnitAsset;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
