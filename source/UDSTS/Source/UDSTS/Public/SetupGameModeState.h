@@ -11,6 +11,8 @@ class AUDSGameModeBase;
 
 class AWaveGameModeState;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStateEnd);
+
 /**
  * 
  */
@@ -34,6 +36,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	FWaveLayout UpcomingWave;
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
+	FOnStateEnd OnSetupStateEnd;
 
 	virtual void OnStateTick(AUDSGameModeBase* GameMode, const float DeltaTime) override;
 

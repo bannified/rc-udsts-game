@@ -20,7 +20,8 @@ public:
 	AEnemyBase();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
-	float MovementSpeed;
+	float Score;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	float Matter;
 
