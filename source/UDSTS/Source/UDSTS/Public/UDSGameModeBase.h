@@ -25,6 +25,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameEnd);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameModeStateChanged, AGameModeState*, OldState, AGameModeState*, NewState);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FEnemyKilled, AActor*, Victim, AActor*, Killer);
+
 /**
  * 
  */
@@ -69,14 +71,26 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
 	FSpawnUnit NextSpawnUnit;
 
-	UPROPERTY(BlueprintAssignable, Category = "Events")
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
 	FOnGameEnd OnGameWin;
 
-	UPROPERTY(BlueprintAssignable, Category = "Events")
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
 	FOnGameEnd OnGameLose;
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
+	FOnGameEnd OnNextWave;
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
+	FOnGameEnd OnWaveCleared;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level")
 	bool b_GameWon = false;
+
+	UFUNCTION(BlueprintCallable, Category = "Events")
+	void OnEnemyDeath(AActor* Victim, AActor* Killer);
+
+	UFUNCTION(BlueprintCallable, Category = "Events")
+	void OnBaseTakeDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 protected:
 	// Called when the game starts or when spawned
