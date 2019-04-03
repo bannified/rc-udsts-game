@@ -16,6 +16,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWaveFinishSpawning);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyUnitSpawned, AActor*, EnemyUnit);
 
+class USpawnUnitAsset;
+
 /**
  * 
  */
@@ -36,6 +38,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "WaveState")
 	void SpawnWithSpawnUnit(AUDSGameModeBase* GameMode, FSpawnUnit SpawnUnit);
 
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
+	void SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* SpawnUnitAsset, const FVector location);
+
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
 	FWaveCleared WaveClearedEvent;
 
@@ -52,6 +57,8 @@ public:
 	virtual void OnStateTick(AUDSGameModeBase* GameMode, const float DeltaTime) override;
 
 	virtual void OnStateStop(AUDSGameModeBase* GameMode) override;
+
+	virtual void OnStateExit(AUDSGameModeBase* GameMode) override;
 
 	/**
 	 * Wave Spawning Members
