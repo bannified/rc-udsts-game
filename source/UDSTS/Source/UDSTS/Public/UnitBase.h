@@ -40,6 +40,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 	UBehaviorTree* UnitBehaviorTreeAsset;	
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Gameplay")
+	float MovementSpeed;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
