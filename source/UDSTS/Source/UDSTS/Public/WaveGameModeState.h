@@ -58,6 +58,8 @@ public:
 
 	virtual void OnStateStop(AUDSGameModeBase* GameMode) override;
 
+	virtual void OnStateExit(AUDSGameModeBase* GameMode) override;
+
 	/**
 	 * Wave Spawning Members
 	 */
