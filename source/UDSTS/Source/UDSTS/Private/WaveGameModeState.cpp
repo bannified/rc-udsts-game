@@ -60,7 +60,7 @@ void AWaveGameModeState::SpawnWithSpawnUnit(AUDSGameModeBase* GameMode, FSpawnUn
 	request.Execute(EEnvQueryRunMode::RandomBest25Pct, this, &AWaveGameModeState::SpawnQueryFinished);
 }
 
-void AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* SpawnUnitAsset, const FVector location)
+AUnitBase* AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* SpawnUnitAsset, const FVector location)
 {
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
@@ -74,7 +74,11 @@ void AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* Spaw
 		SpawnUnitAsset->InitializeUnit(unit);
 		// TODO: Invoke ISpawnable (if this interface gets made)
 		OnEnemyUnitSpawned.Broadcast(unit);
+
+		return unit;
 	}
+
+	return nullptr;
 }
 
 void AWaveGameModeState::OnStateEnter(AUDSGameModeBase* GameMode)
