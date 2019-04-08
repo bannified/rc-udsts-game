@@ -60,7 +60,7 @@ void AWaveGameModeState::SpawnWithSpawnUnit(AUDSGameModeBase* GameMode, FSpawnUn
 	request.Execute(EEnvQueryRunMode::RandomBest25Pct, this, &AWaveGameModeState::SpawnQueryFinished);
 }
 
-void AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* SpawnUnitAsset, const FVector location)
+AUnitBase* AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* SpawnUnitAsset, const FVector location)
 {
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
@@ -70,21 +70,29 @@ void AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* Spaw
 		FVector origin, boxExtent;
 		unit->GetActorBounds(false, origin, boxExtent);
 		unit->AddActorWorldOffset(FVector(0, 0, boxExtent.Z));
+		unit->SpawnUnitAsset = SpawnUnitAsset;
 		SpawnUnitAsset->InitializeUnit(unit);
 		// TODO: Invoke ISpawnable (if this interface gets made)
 		OnEnemyUnitSpawned.Broadcast(unit);
+
+		return unit;
 	}
+
+	return nullptr;
 }
 
 void AWaveGameModeState::OnStateEnter(AUDSGameModeBase* GameMode)
 {
 	CurrentSpawnUnitIndex = 0;
+	ReceiveOnStateEnter(GameMode);
 }
 
 void AWaveGameModeState::OnStateStart(AUDSGameModeBase* GameMode)
 {
-	WaveClearedEvent.AddDynamic(GameMode, &AUDSGameModeBase::NextWave);
+	//WaveClearedEvent.AddDynamic(GameMode, &AUDSGameModeBase::NextWave);
 	OnEnemyUnitSpawned.AddDynamic(GameMode, &AUDSGameModeBase::HandleEnemySpawn);
+
+	ReceiveOnStateStart(GameMode);
 }
 
 void AWaveGameModeState::OnStateTick(AUDSGameModeBase* GameMode, const float DeltaTime)
@@ -117,10 +125,20 @@ void AWaveGameModeState::OnStateTick(AUDSGameModeBase* GameMode, const float Del
 		}
 	}
 
+	ReceiveOnStateTick(GameMode, DeltaTime);
 }
 
 void AWaveGameModeState::OnStateStop(AUDSGameModeBase* GameMode)
 {
-	WaveClearedEvent.RemoveDynamic(GameMode, &AUDSGameModeBase::NextWave);
+	//WaveClearedEvent.RemoveDynamic(GameMode, &AUDSGameModeBase::NextWave);
 	OnEnemyUnitSpawned.RemoveDynamic(GameMode, &AUDSGameModeBase::HandleEnemySpawn);
+
+	ReceiveOnStateStop(GameMode);
+}
+
+void AWaveGameModeState::OnStateExit(AUDSGameModeBase* GameMode)
+{
+	GameMode->OnWaveCleared.Broadcast();
+	ReceiveOnStateExit(GameMode);
+	Destroy();
 }
