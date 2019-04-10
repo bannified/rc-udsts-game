@@ -39,7 +39,7 @@ public:
 	void SpawnWithSpawnUnit(AUDSGameModeBase* GameMode, FSpawnUnit SpawnUnit);
 
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
-	void SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* SpawnUnitAsset, const FVector location);
+	class AUnitBase* SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset* SpawnUnitAsset, const FVector location);
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
 	FWaveCleared WaveClearedEvent;

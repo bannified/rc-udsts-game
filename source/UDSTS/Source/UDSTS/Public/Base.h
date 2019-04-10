@@ -26,13 +26,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
 	UStaticMeshComponent* MainMesh;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
 	UStaticMeshComponent* DamageTriggerMesh;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = "Components")
+	UPROPERTY(BlueprintReadWrite, VisibleDefaultsOnly, Category = "Components")
 	USphereComponent* DamageTriggerCollider;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
