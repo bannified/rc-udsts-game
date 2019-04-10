@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "SlateBrush.h"
 #include "SpawnUnitAsset.generated.h"
 
 class AUnitBase;
@@ -22,6 +23,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Score Keeping")
 	int32 Score;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Score Keeping")
+	FSlateBrush ScoreScreenDisplayImage;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Gameplay")
 	TSubclassOf<AUnitBase> UnitBase;
