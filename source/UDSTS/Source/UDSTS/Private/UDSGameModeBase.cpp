@@ -147,12 +147,12 @@ void AUDSGameModeBase::StartGame(ULevelDataAsset* LevelData)
 
 	}
 
-	if (GameHUDWidget != nullptr)
+	/*if (GameHUDWidget != nullptr)
 	{
 		UUserWidget* hudWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), GameHUDWidget);
 
 		hudWidget->AddToViewport();
-	}
+	}*/
 
 	/*if (MapLevelDataAsset == nullptr)
 	{
