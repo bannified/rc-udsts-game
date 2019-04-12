@@ -96,7 +96,7 @@ void ACharacterBase::Boost_Action()
 	FVector characterVelocity = GetCharacterMovement()->Velocity;
 	characterVelocity.Normalize();
 
-	FVector resultDirectionVector = characterVelocity + inputVector;
+	FVector resultDirectionVector = (FMath::IsNearlyZero(inputVector.Size()) && FMath::IsNearlyZero(characterVelocity.Size())) ? GetActorForwardVector() : characterVelocity + inputVector;
 	resultDirectionVector.Normalize();
 
 	AddImpulseToCharacterInDirectionWithMagnitude(resultDirectionVector, Boost_Force);
