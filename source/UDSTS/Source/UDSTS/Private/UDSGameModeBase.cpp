@@ -223,8 +223,8 @@ void AUDSGameModeBase::WinGame()
 
 void AUDSGameModeBase::LoseGame()
 {
-	if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Lose Game!"));
+	//if (GEngine)
+	//	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Lose Game!"));
 
 	OnGameLose.Broadcast();
 }

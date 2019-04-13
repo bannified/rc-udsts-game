@@ -35,6 +35,9 @@ public:
 	float SetupTime;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	bool fastFoward = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	FWaveLayout UpcomingWave;
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable, Category = "Events")
