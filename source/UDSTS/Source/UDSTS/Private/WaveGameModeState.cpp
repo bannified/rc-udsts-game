@@ -64,20 +64,29 @@ AUnitBase* AWaveGameModeState::SpawnWithSpawnUnitAssetAtLocation(USpawnUnitAsset
 {
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	if (SpawnUnitAsset == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SpawnUnitAsset == nullptr"));
+		return nullptr;
+	}
+
 	AUnitBase* unit = GetWorld()->SpawnActor<AUnitBase>(SpawnUnitAsset->UnitBase, location, FRotator::ZeroRotator, SpawnInfo);
 	if (unit != nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("After unit spawning."));
 		FVector origin, boxExtent;
 		unit->GetActorBounds(false, origin, boxExtent);
 		unit->AddActorWorldOffset(FVector(0, 0, boxExtent.Z));
 		unit->SpawnUnitAsset = SpawnUnitAsset;
+		UE_LOG(LogTemp, Warning, TEXT("Before InitializeUnit"));
 		SpawnUnitAsset->InitializeUnit(unit);
 		// TODO: Invoke ISpawnable (if this interface gets made)
 		OnEnemyUnitSpawned.Broadcast(unit);
 
 		return unit;
 	}
-
+	UE_LOG(LogTemp, Warning, TEXT("End of Spawn"));
 	return nullptr;
 }
 

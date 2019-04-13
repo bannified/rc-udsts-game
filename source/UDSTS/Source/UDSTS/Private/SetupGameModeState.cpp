@@ -12,13 +12,14 @@ void ASetupGameModeState::Init(FWaveLayout WaveLayout, TSubclassOf<AWaveGameMode
 	UpcomingWave = WaveLayout;
 	SetupTime = UpcomingWave.SetupTime;
 	SkipButton = FKey(FName("SpaceBar"));
+	fastFoward = false;
 }
 
 void ASetupGameModeState::OnStateTick(AUDSGameModeBase* GameMode, const float DeltaTime)
 {
 	RunningTime += DeltaTime;
 
-	if (RunningTime >= SetupTime || UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsInputKeyDown(SkipButton))
+	if (RunningTime >= SetupTime || fastFoward)
 	{
 		TransitionToWave(GameMode);
 	}
