@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class APlayerControllerBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBoostEvent, ACharacterBase*, Charater);
 
@@ -16,9 +17,11 @@ class UDSTS_API ACharacterBase : public ACharacter
 {
 	GENERATED_BODY()
 
+	friend class APlayerControllerBase;
+
 public:
 	// Sets default values for this character's properties
-	ACharacterBase();	
+	ACharacterBase();
 
 protected:
 
@@ -41,14 +44,79 @@ protected:
 	 * Movement Methods
 	 */
 
-	UFUNCTION(BlueprintCallable, Category = "Movement")
-	void MoveForward(float value);
+	virtual void MoveForward(float value);
+	UFUNCTION(BlueprintImplementableEvent, Category = "Movement")
+	void ReceiveMoveForward(float value);
 
-	UFUNCTION(BlueprintCallable, Category = "Movement")
-	void MoveRight(float value);
+	virtual void MoveRight(float value);
+	UFUNCTION(BlueprintImplementableEvent, Category = "Movement")
+	void ReceiveMoveRight(float value);
 
-	UFUNCTION(BlueprintCallable, Category = "Movement")
-	void MoveUp(float value);
+	virtual void MoveUp(float value);
+	UFUNCTION(BlueprintImplementableEvent, Category = "Movement")
+	void ReceiveMoveUp(float value);
+
+	/**
+	 * Actions
+	 */
+	virtual void PrimaryFireStart();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
+	void ReceivePrimaryFireStart();
+
+	virtual void PrimaryFireEnd();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
+	void ReceivePrimaryFireEnd();
+
+	virtual void SecondaryFireStart();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
+	void ReceiveSecondaryFireStart();
+
+	virtual void SecondaryFireEnd();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
+	void ReceiveSecondaryFireEnd();
+
+	virtual void PreviousEquipment();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
+	void ReceivePreviousEquipment();
+	
+	virtual void NextEquipment();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
+	void ReceiveNextEquipment();
+
+	virtual void MovementModStart();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
+	void ReceiveMovementModStart();
+
+	virtual void MovementModEnd();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
+	void ReceiveMovementModEnd();
+
+	/**
+	 * General
+	 */
+	virtual void InteractStart();
+	UFUNCTION(BlueprintImplementableEvent, Category = "General")
+	void ReceiveInteractStart();
+
+	virtual void InteractEnd();
+	UFUNCTION(BlueprintImplementableEvent, Category = "General")
+	void ReceiveInteractEnd();
+
+	virtual void Escape();
+	UFUNCTION(BlueprintImplementableEvent, Category = "General")
+	void ReceiveEscape();
+
+	virtual void Confirm();
+	UFUNCTION(BlueprintImplementableEvent, Category = "General")
+	void ReceiveConfirm();
+
+	virtual void Pause();
+	UFUNCTION(BlueprintImplementableEvent, Category = "General")
+	void ReceivePause();
+
+	virtual void Contextual();
+	UFUNCTION(BlueprintImplementableEvent, Category = "General")
+	void ReceiveContextual();
 
 	/**
 	 * Thrusts player in a direction based on current velocity and input direction.
@@ -107,8 +175,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

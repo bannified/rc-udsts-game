@@ -60,6 +60,8 @@ void ACharacterBase::MoveForward(float value)
 	resultVector.X *= HorizontalSwimScale;
 
 	AddMovementInput(resultVector, value);
+
+	ReceiveMoveForward(value);
 }
 
 void ACharacterBase::MoveRight(float value)
@@ -75,11 +77,87 @@ void ACharacterBase::MoveRight(float value)
 	resultVector.X *= HorizontalSwimScale;
 
 	AddMovementInput(resultVector, value);
+
+	ReceiveMoveRight(value);
 }
 
 void ACharacterBase::MoveUp(float value)
 {
 	GetCharacterMovement()->AddForce(FVector(0.0, 0.0, value * VerticalSwimForce));
+	ReceiveMoveUp(value);
+}
+
+void ACharacterBase::PrimaryFireStart()
+{
+	ReceivePrimaryFireStart();
+}
+
+void ACharacterBase::PrimaryFireEnd()
+{
+	ReceivePrimaryFireEnd();
+
+}
+
+void ACharacterBase::SecondaryFireStart()
+{
+	ReceiveSecondaryFireStart();
+}
+
+void ACharacterBase::SecondaryFireEnd()
+{
+	ReceiveSecondaryFireEnd();
+}
+
+void ACharacterBase::PreviousEquipment()
+{
+	ReceivePreviousEquipment();
+}
+
+void ACharacterBase::NextEquipment()
+{
+	ReceiveNextEquipment();
+}
+
+void ACharacterBase::MovementModStart()
+{
+	Boost_Action();
+
+	ReceiveMovementModStart();
+}
+
+void ACharacterBase::MovementModEnd()
+{
+	ReceiveMovementModEnd();
+}
+
+void ACharacterBase::InteractStart()
+{
+	ReceiveInteractStart();
+}
+
+void ACharacterBase::InteractEnd()
+{
+	ReceiveInteractEnd();
+}
+
+void ACharacterBase::Escape()
+{
+	ReceiveEscape();
+}
+
+void ACharacterBase::Confirm()
+{
+	ReceiveConfirm();
+}
+
+void ACharacterBase::Pause()
+{
+	ReceivePause();
+}
+
+void ACharacterBase::Contextual()
+{
+	ReceiveContextual();
 }
 
 void ACharacterBase::Boost_Action()
@@ -133,21 +211,3 @@ void ACharacterBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
-// Called to bind functionality to input
-void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis("MoveForward", this, &ACharacterBase::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ACharacterBase::MoveRight);
-	PlayerInputComponent->BindAxis("Ascend", this, &ACharacterBase::MoveUp);
-
-	PlayerInputComponent->BindAxis("LookUp", this, &ACharacterBase::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookRight", this, &ACharacterBase::AddControllerYawInput);
-
-	PlayerInputComponent->BindAction("Boost", IE_Pressed, this, &ACharacterBase::Boost_Action);
-
-
-}
-
