@@ -33,101 +33,189 @@ void APlayerControllerBase::SetupInputComponent()
 	InputComponent->BindAction("Confirm", EInputEvent::IE_Pressed, this, &APlayerControllerBase::Confirm);
 	InputComponent->BindAction("Pause", EInputEvent::IE_Pressed, this, &APlayerControllerBase::Pause);
 	InputComponent->BindAction("Contextual", EInputEvent::IE_Pressed, this, &APlayerControllerBase::Contextual);
+
+	InputComponent->BindAction("Shop_Buy", EInputEvent::IE_Pressed, this, &APlayerControllerBase::ShopBuy);
+	InputComponent->BindAction("_UILeft", EInputEvent::IE_Pressed, this, &APlayerControllerBase::UILeft);
+	InputComponent->BindAction("_UIRight", EInputEvent::IE_Pressed, this, &APlayerControllerBase::UIRight);
+	InputComponent->BindAction("_UIUp", EInputEvent::IE_Pressed, this, &APlayerControllerBase::UIUp);
+	InputComponent->BindAction("_UIDown", EInputEvent::IE_Pressed, this, &APlayerControllerBase::UIDown);
 }
 
 void APlayerControllerBase::MoveForward(float value)
 {
-	m_Character->MoveForward(value);
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->MoveForward(value);
+	}
 }
 
 void APlayerControllerBase::MoveRight(float value)
 {
-	m_Character->MoveRight(value);
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->MoveRight(value);
+	}
 }
 
 void APlayerControllerBase::MoveUp(float value)
 {
+	if (m_IsInputToCharacterActive && m_Character)
+	{
 	m_Character->MoveUp(value);
+	}
 }
 
 void APlayerControllerBase::LookUp(float value)
 {
-	m_Character->AddControllerPitchInput(value);
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->AddControllerPitchInput(value);
+	}
 }
 
 void APlayerControllerBase::LookRight(float value)
 {
-	m_Character->AddControllerYawInput(value);
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->AddControllerYawInput(value);
+	}
 }
 
 void APlayerControllerBase::PrimaryFireStart()
 {
-	m_Character->PrimaryFireStart();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->PrimaryFireStart();
+	}
 }
 
 void APlayerControllerBase::PrimaryFireEnd()
 {
-	m_Character->PrimaryFireEnd();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->PrimaryFireEnd();
+	}
 }
 
 void APlayerControllerBase::SecondaryFireStart()
 {
-	m_Character->SecondaryFireStart();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->SecondaryFireStart();
+	}
 }
 
 void APlayerControllerBase::SecondaryFireEnd()
 {
-	m_Character->SecondaryFireEnd();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->SecondaryFireEnd();
+	}
 }
 
 void APlayerControllerBase::MovementModStart()
 {
-	m_Character->MovementModStart();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->MovementModStart();
+	}
 }
 
 void APlayerControllerBase::MovementModEnd()
 {
-	m_Character->MovementModEnd();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->MovementModEnd();
+	}
 }
 
 void APlayerControllerBase::InteractStart()
 {
-	m_Character->InteractStart();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->InteractStart();
+	}
 }
 
 void APlayerControllerBase::InteractEnd()
 {
-	m_Character->InteractEnd();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->InteractEnd();
+	}
 }
 
 void APlayerControllerBase::PreviousEquipment()
 {
-	m_Character->PreviousEquipment();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->PreviousEquipment();
+	}
 }
 
 void APlayerControllerBase::NextEquipment()
 {
-	m_Character->NextEquipment();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->NextEquipment();
+	}
 }
 
 void APlayerControllerBase::Escape()
 {
-	m_Character->Escape();
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->Escape();
+	}
 }
 
 void APlayerControllerBase::Contextual()
 {
-
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->Contextual();
+	}
 }
 
 void APlayerControllerBase::Confirm()
 {
-
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->Confirm();
+	}
 }
 
 void APlayerControllerBase::Pause()
 {
+	if (m_IsInputToCharacterActive && m_Character)
+	{
+		m_Character->Pause();
+	}
+}
 
+void APlayerControllerBase::ShopBuy()
+{
+	OnShopBuy.Broadcast(this);
+}
+
+void APlayerControllerBase::UILeft()
+{
+	OnUILeft.Broadcast(this);
+}
+
+void APlayerControllerBase::UIRight()
+{
+	OnUIRight.Broadcast(this);
+}
+
+void APlayerControllerBase::UIUp()
+{
+	OnUIUp.Broadcast(this);
+}
+
+void APlayerControllerBase::UIDown()
+{
+	OnUIDown.Broadcast(this);
 }
 
 void APlayerControllerBase::Possess(APawn* aPawn)
@@ -135,10 +223,12 @@ void APlayerControllerBase::Possess(APawn* aPawn)
 	Super::Possess(aPawn);
 
 	ACharacterBase* character = Cast<ACharacterBase>(GetPawn());
-	if (character != nullptr) {
+	if (character != nullptr)
+	{
 		m_Character = character;
 	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("PlayerControllerBase isn't possessing "));
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerControllerBase isn't possessing."));
 	}
 }
