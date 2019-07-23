@@ -23,6 +23,10 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 
+	UUserWidget* ContextualWidget;
+
+	FORCEINLINE APlayerControllerBase* GetPlayerController() { return Cast<APlayerControllerBase>(GetController()); }
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
