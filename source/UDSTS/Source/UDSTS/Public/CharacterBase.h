@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "PlayerControllerBase.h"
 #include "CharacterBase.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
-class APlayerControllerBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBoostEvent, ACharacterBase*, Charater);
 
@@ -17,7 +17,7 @@ class UDSTS_API ACharacterBase : public ACharacter
 {
 	GENERATED_BODY()
 
-	friend class APlayerControllerBase;
+	friend APlayerControllerBase;
 
 public:
 	// Sets default values for this character's properties
@@ -25,7 +25,11 @@ public:
 
 	UUserWidget* ContextualWidget;
 
-	FORCEINLINE APlayerControllerBase* GetPlayerController() { return Cast<APlayerControllerBase>(GetController()); }
+	/** Returns controller for this actor. */
+	FORCEINLINE APlayerControllerBase* GetPlayerControllerBase()
+	{
+		return Cast<APlayerControllerBase>(GetController());
+	};
 
 protected:
 
