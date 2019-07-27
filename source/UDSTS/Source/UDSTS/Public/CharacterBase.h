@@ -23,8 +23,6 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 
-	UUserWidget* ContextualWidget;
-
 	/** Returns controller for this actor. */
 	FORCEINLINE APlayerControllerBase* GetPlayerControllerBase()
 	{
