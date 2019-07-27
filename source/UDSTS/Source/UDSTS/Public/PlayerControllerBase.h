@@ -16,7 +16,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterInteract, APlayerControl
 UCLASS()
 class UDSTS_API APlayerControllerBase : public APlayerController
 {
+
 	GENERATED_BODY()
+public:
+	APlayerControllerBase();
+
+	virtual void BeginPlay() override;
 
 	virtual void SetupInputComponent() override;
 
@@ -90,8 +95,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
 	FOnCharacterInteract OnShopBuy;
 
-private:
+protected:
+	UPROPERTY(Replicated, VisibleAnywhere, Category = "Player")
 	ACharacterBase* m_Character;
-
+	UPROPERTY(Replicated, VisibleAnywhere, Category = "Player")
 	bool m_IsInputToCharacterActive;
 };

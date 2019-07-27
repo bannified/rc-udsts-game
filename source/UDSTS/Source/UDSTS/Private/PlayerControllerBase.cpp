@@ -2,6 +2,19 @@
 
 #include "PlayerControllerBase.h"
 #include "CharacterBase.h"
+#include "UDSTS.h"
+
+APlayerControllerBase::APlayerControllerBase()
+{
+	m_IsInputToCharacterActive = true;
+
+}
+
+void APlayerControllerBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
 
 void APlayerControllerBase::SetupInputComponent()
 {
@@ -43,7 +56,7 @@ void APlayerControllerBase::SetupInputComponent()
 
 void APlayerControllerBase::MoveForward(float value)
 {
-	if (m_IsInputToCharacterActive && m_Character)
+	if (m_Character)
 	{
 		m_Character->MoveForward(value);
 	}
@@ -86,6 +99,7 @@ void APlayerControllerBase::PrimaryFireStart()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->PrimaryFireStart();
+		UE_LOG(LogTemp, Log, TEXT("PrimaryFireStart"));
 	}
 }
 
@@ -94,6 +108,8 @@ void APlayerControllerBase::PrimaryFireEnd()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->PrimaryFireEnd();
+		UE_LOG(LogTemp, Log, TEXT("PrimaryFireEnd"));
+
 	}
 }
 
@@ -118,6 +134,8 @@ void APlayerControllerBase::MovementModStart()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->MovementModStart();
+		UE_LOG(LogTemp, Log, TEXT("MovementModStart"));
+
 	}
 }
 
@@ -222,6 +240,8 @@ void APlayerControllerBase::Possess(APawn* aPawn)
 {
 	Super::Possess(aPawn);
 
+	PRINT_INFO("Possessed called in ACharacterBase in PC: %s", *(this->GetName()));
+
 	ACharacterBase* character = Cast<ACharacterBase>(GetPawn());
 	if (character != nullptr)
 	{
@@ -229,6 +249,14 @@ void APlayerControllerBase::Possess(APawn* aPawn)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerControllerBase isn't possessing."));
+		PRINT_INFO("Possessing with no ACharacterBase in PC: %s", *(this->GetName()));
 	}
+}
+
+void APlayerControllerBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APlayerControllerBase, m_Character);
+
 }
