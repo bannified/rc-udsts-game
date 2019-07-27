@@ -9,6 +9,7 @@
 class UUserWidget;
 class ABase;
 class UBoxComponent;
+class ACharacterBase;
 
 UCLASS()
 class UDSTS_API AShop : public AActor
@@ -23,13 +24,21 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Visual")
+	USceneComponent* RootSceneComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay")
 	UBoxComponent* EntryBox;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay")
 	UBoxComponent* ExitBox;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UUserWidget> InteractWidgetClass;
+	UPROPERTY(BlueprintReadOnly)
+	UUserWidget* InteractWidgetInstance;
+
+	UPROPERTY(BlueprintReadOnly)
+	ACharacterBase* CurrentCharacter;
 
 	UFUNCTION(BlueprintCallable)
 	void ShowInteractWidget(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
