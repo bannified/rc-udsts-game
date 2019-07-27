@@ -74,7 +74,7 @@ void APlayerControllerBase::MoveUp(float value)
 {
 	if (m_IsInputToCharacterActive && m_Character)
 	{
-	m_Character->MoveUp(value);
+		m_Character->MoveUp(value);
 	}
 }
 

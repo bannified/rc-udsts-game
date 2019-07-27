@@ -81,11 +81,22 @@ void ACharacterBase::MoveRight(float value)
 	ReceiveMoveRight(value);
 }
 
-void ACharacterBase::MoveUp(float value)
+void ACharacterBase::MoveUp_Implementation(float value)
 {
 	GetCharacterMovement()->AddForce(FVector(0.0, 0.0, value * VerticalSwimForce));
 	ReceiveMoveUp(value);
 }
+
+bool ACharacterBase::MoveUp_Validate(float value)
+{
+	return true;
+}
+
+//void ACharacterBase::MoveUp(float value)
+//{
+//	GetCharacterMovement()->AddForce(FVector(0.0, 0.0, value * VerticalSwimForce));
+//	ReceiveMoveUp(value);
+//}
 
 void ACharacterBase::PrimaryFireStart()
 {

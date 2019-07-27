@@ -58,6 +58,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Movement")
 	void ReceiveMoveRight(float value);
 
+	UFUNCTION(Server, Reliable, WithValidation)
 	virtual void MoveUp(float value);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Movement")
 	void ReceiveMoveUp(float value);
