@@ -8,6 +8,7 @@
 
 class ABase;
 class USpawnUnitAsset;
+class APlayerControllerBase;
 
 /**
  * 
@@ -39,4 +40,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Scorekeeping")
 	TMap< USpawnUnitAsset*, int32 > SpawnUnitToLeakCountMap;
+
+	UFUNCTION(BlueprintCallable, Category = "Players")
+	void AddPlayerState(APlayerState* playerState);
 };

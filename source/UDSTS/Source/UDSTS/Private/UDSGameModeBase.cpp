@@ -16,6 +16,7 @@
 void AUDSGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+
 	SetupSpawnPointGroups();
 
 	AWaveDefenseGameState* gs = GetGameState<AWaveDefenseGameState>();
@@ -52,6 +53,23 @@ void AUDSGameModeBase::Tick(float DeltaTime)
 	{
 		CurrentState->OnStateTick(this, DeltaTime);
 	}
+
+}
+
+void AUDSGameModeBase::RegisterPlayer(APlayerController* playerController)
+{
+	if (playerController == nullptr) 
+	{
+		return;
+	}
+
+	PlayerControllerList.AddUnique(playerController);
+}
+
+void AUDSGameModeBase::HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer)
+{
+	Super::HandleStartingNewPlayer(NewPlayer);
+	RegisterPlayer(NewPlayer);
 
 }
 

@@ -21,6 +21,8 @@ class AWaveGameModeState;
 
 class ASetupGameModeState;
 
+class APlayerControllerBase;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameEnd);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameModeStateChanged, AGameModeState*, OldState, AGameModeState*, NewState);
@@ -99,6 +101,14 @@ protected:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Player Management")
+	TArray<APlayerController*> PlayerControllerList;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Management")
+	virtual void RegisterPlayer(APlayerController* playerController);
+
+	virtual void HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer) override;
+
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
@@ -143,7 +153,5 @@ protected:
 
 	UPROPERTY(BlueprintAssignable, Category = "State Machine")
 	FOnGameModeStateChanged OnStateChanged;
-
-	
 
 };
