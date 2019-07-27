@@ -2,12 +2,17 @@
 
 #include "WaveDefenseGameState.h"
 #include "PlayerControllerBase.h"
+#include "PlayerStateBase.h"
 #include "GameFramework/PlayerState.h"
 
 void AWaveDefenseGameState::AddPlayerState(APlayerState* playerState)
 {
-	if (!playerState->bIsInactive) 
+	Super::AddPlayerState(playerState);
+
+	auto playerStateBase = Cast<APlayerStateBase>(playerState);
+
+	if (playerStateBase != nullptr && !playerStateBase->bIsInactive)
 	{
-		PlayerArray.AddUnique(playerState);
+		PlayerArray.AddUnique(playerStateBase);
 	}
 }

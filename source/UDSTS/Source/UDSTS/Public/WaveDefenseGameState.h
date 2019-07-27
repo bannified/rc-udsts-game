@@ -9,6 +9,7 @@
 class ABase;
 class USpawnUnitAsset;
 class APlayerControllerBase;
+class APlayerStateBase;
 
 /**
  * 
@@ -42,5 +43,5 @@ public:
 	TMap< USpawnUnitAsset*, int32 > SpawnUnitToLeakCountMap;
 
 	UFUNCTION(BlueprintCallable, Category = "Players")
-	void AddPlayerState(APlayerState* playerState);
+	virtual void AddPlayerState(APlayerState* playerState) override;
 };
