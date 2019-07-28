@@ -65,7 +65,7 @@ protected:
 	virtual void UIUp();
 	virtual void UIDown();
 
-	virtual void Possess(APawn* aPawn) override;
+	virtual void OnPossess(APawn* aPawn) override;
 
 public:
 

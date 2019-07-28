@@ -236,9 +236,9 @@ void APlayerControllerBase::UIDown()
 	OnUIDown.Broadcast(this);
 }
 
-void APlayerControllerBase::Possess(APawn* aPawn)
+void APlayerControllerBase::OnPossess(APawn* aPawn)
 {
-	Super::Possess(aPawn);
+	Super::OnPossess(aPawn);
 
 	PRINT_INFO("Possessed called in ACharacterBase in PC: %s", *(this->GetName()));
 
