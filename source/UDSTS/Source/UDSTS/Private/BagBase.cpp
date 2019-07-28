@@ -65,6 +65,7 @@ void ABagBase::Tick(float DeltaTime)
 
 void ABagBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ABagBase, Matter);
 	DOREPLIFETIME(ABagBase, MaxMatter);
 }
