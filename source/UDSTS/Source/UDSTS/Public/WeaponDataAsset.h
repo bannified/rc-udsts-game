@@ -9,6 +9,7 @@
 #include "WeaponDataAsset.generated.h"
 
 class UStaticMesh;
+class ANozzleBase;
 
 /**
  * 
@@ -24,7 +25,8 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Gameplay")
 	int32 MaxLevel;
 
-	// TODO: Nozzle Class. UNozzleBase probably.
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Gameplay")
+	TSubclassOf<ANozzleBase> NozzleClass;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Visual")
 	UStaticMesh* Mesh;
