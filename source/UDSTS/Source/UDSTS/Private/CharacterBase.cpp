@@ -6,6 +6,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "UnrealNetwork.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -92,12 +93,6 @@ bool ACharacterBase::MoveUp_Validate(float value)
 	return true;
 }
 
-//void ACharacterBase::MoveUp(float value)
-//{
-//	GetCharacterMovement()->AddForce(FVector(0.0, 0.0, value * VerticalSwimForce));
-//	ReceiveMoveUp(value);
-//}
-
 void ACharacterBase::PrimaryFireStart()
 {
 	ReceivePrimaryFireStart();
@@ -131,7 +126,7 @@ void ACharacterBase::NextEquipment()
 
 void ACharacterBase::MovementModStart()
 {
-	Boost_Action();
+	BoostAction();
 
 	ReceiveMovementModStart();
 }
@@ -171,15 +166,25 @@ void ACharacterBase::Contextual()
 	ReceiveContextual();
 }
 
-void ACharacterBase::Boost_Action()
+void ACharacterBase::PlayBoostEffects_Implementation()
 {
-	if (!b_CanBoost)
-	{
+	if (BoosterParticleSystem != nullptr) {
+		UGameplayStatics::SpawnEmitterAttached(BoosterParticleSystem, GetMesh(), BoosterEndSocketName, FVector::ZeroVector, FRotator::ZeroRotator, BoosterParticleScale, EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::AutoRelease);
+	}
+
+	if (BoosterSound != nullptr) {
+		UGameplayStatics::SpawnSoundAttached(BoosterSound, GetMesh(), BoosterEndSocketName, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset, false, 0.5f);
+	}
+}
+
+void ACharacterBase::BoostAction_Implementation()
+{
+	if (!b_CanBoost) {
 		return;
 	}
 
 	FVector inputVector = GetInputAxisValue(FName("MoveForward")) * GetActorForwardVector()
-						+ GetInputAxisValue(FName("MoveRight")) * GetActorRightVector();
+		+ GetInputAxisValue(FName("MoveRight")) * GetActorRightVector();
 	inputVector.Normalize();
 
 	FVector characterVelocity = GetCharacterMovement()->Velocity;
@@ -190,19 +195,11 @@ void ACharacterBase::Boost_Action()
 
 	AddImpulseToCharacterInDirectionWithMagnitude(resultDirectionVector, Boost_Force);
 
-	if (BoosterParticleSystem != nullptr)
-	{
-		UGameplayStatics::SpawnEmitterAttached(BoosterParticleSystem, GetMesh(), BoosterEndSocketName, FVector::ZeroVector, FRotator::ZeroRotator, BoosterParticleScale, EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::AutoRelease);
-	}
-
-	if (BoosterSound != nullptr)
-	{
-		UGameplayStatics::SpawnSoundAttached(BoosterSound, GetMesh(), BoosterEndSocketName, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset, false, 0.5f);
-	}
-
 	this->b_CanBoost = false;
 
 	OnBoostActivated.Broadcast(this);
+
+	PlayBoostEffects();
 
 	GetWorldTimerManager().SetTimer(Boost_Cooldown_TimerHandle, [&]()
 	{
@@ -211,9 +208,19 @@ void ACharacterBase::Boost_Action()
 	}, Boost_Cooldown, false);
 }
 
-void ACharacterBase::AddImpulseToCharacterInDirectionWithMagnitude(const FVector directionalVector, const float impulseMagnutide)
+bool ACharacterBase::BoostAction_Validate()
+{
+	return true;
+}
+
+void ACharacterBase::AddImpulseToCharacterInDirectionWithMagnitude_Implementation(const FVector directionalVector, const float impulseMagnutide)
 {
 	GetCharacterMovement()->AddImpulse(directionalVector * impulseMagnutide, true);
+}
+
+bool ACharacterBase::AddImpulseToCharacterInDirectionWithMagnitude_Validate(const FVector directionalVector, const float impulseMagnutide)
+{
+	return true;
 }
 
 // Called every frame
@@ -221,4 +228,11 @@ void ACharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ACharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ACharacterBase, b_CanBoost);
 }

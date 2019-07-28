@@ -128,8 +128,11 @@ protected:
 	/**
 	 * Thrusts player in a direction based on current velocity and input direction.
 	 */
-	UFUNCTION(BlueprintCallable, Category = "Advanced Movement")
-	void Boost_Action();
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "Advanced Movement")
+	void BoostAction();
+
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable, Category = "Advanced Movement")
+	void PlayBoostEffects();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Movement")
 	float Boost_Force;
@@ -137,12 +140,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Movement")
 	float Boost_Cooldown;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Advanced Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Advanced Movement")
 	float b_CanBoost;
 
 	FTimerHandle Boost_Cooldown_TimerHandle;
 
-	UFUNCTION(BlueprintCallable, Category = "Advanced Movement")
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "Advanced Movement")
 	void AddImpulseToCharacterInDirectionWithMagnitude(const FVector directionalVector, const float impulseMagnutide);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (ClampMin = "0.0", ClampMax = "1.0"))
