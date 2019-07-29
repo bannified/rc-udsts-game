@@ -137,6 +137,16 @@ void AWeaponBase::BeginPlay()
 	
 }
 
+float AWeaponBase::GetPrimaryCooldown()
+{
+	return PrimaryBaseCooldown;
+}
+
+float AWeaponBase::GetSecondaryCooldown()
+{
+	return SecondaryBaseCooldown;
+}
+
 // Called every frame
 void AWeaponBase::Tick(float DeltaTime)
 {
@@ -149,6 +159,8 @@ void AWeaponBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AWeaponBase, CurrentNozzle);
 	DOREPLIFETIME(AWeaponBase, Character);
+	DOREPLIFETIME(AWeaponBase, PrimaryBaseCooldown);
+	DOREPLIFETIME(AWeaponBase, SecondaryBaseCooldown);
 
 }
 

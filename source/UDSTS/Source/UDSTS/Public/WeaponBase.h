@@ -84,6 +84,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<USoundCue> SuckSoundCueClass;
 
+	/* Runtime variables */
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	float PrimaryBaseCooldown;
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	float SecondaryBaseCooldown;
+	
+	/* Virtual getters */
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	virtual float GetPrimaryCooldown();
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	virtual float GetSecondaryCooldown();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
