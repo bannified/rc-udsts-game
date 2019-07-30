@@ -10,6 +10,7 @@ class UUserWidget;
 class ABase;
 class UBoxComponent;
 class ACharacterBase;
+class APlayerControllerBase;
 
 UCLASS()
 class UDSTS_API AShop : public AActor
@@ -40,14 +41,30 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	ACharacterBase* CurrentCharacter;
 
+	void ShowInteractWidget(APlayerControllerBase* playerController);
+
+	void HideInteractWidget(APlayerControllerBase* playerController);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UUserWidget> ShopWidgetClass;
+	UPROPERTY(BlueprintReadOnly)
+	UUserWidget* ShopWidgetInstance;
+
 	UFUNCTION(BlueprintCallable)
-	void ShowInteractWidget(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	
+	void ShowShopWidget(APlayerControllerBase* controller);
 	UFUNCTION(BlueprintCallable)
-	void HideInteractWidget(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void HideShopWidget(APlayerControllerBase* controller);
+
+	UFUNCTION()
+	void ActorEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void ActorExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	bool m_PlayerWithinBounds;
 
 };

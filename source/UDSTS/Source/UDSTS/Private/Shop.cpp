@@ -54,45 +54,115 @@ void AShop::BeginPlay()
 {
 	Super::BeginPlay();
 
-	EntryBox->OnComponentBeginOverlap.AddDynamic(this, &AShop::ShowInteractWidget);
-	ExitBox->OnComponentEndOverlap.AddDynamic(this, &AShop::HideInteractWidget);
+	m_PlayerWithinBounds = false;
+
+	EntryBox->OnComponentBeginOverlap.AddDynamic(this, &AShop::ActorEnter);
+	ExitBox->OnComponentEndOverlap.AddDynamic(this, &AShop::ActorExit);
 }
 
-void AShop::ShowInteractWidget(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AShop::ShowInteractWidget(APlayerControllerBase* controller)
 {
-	ACharacterBase* character = Cast<ACharacterBase>(OtherActor);
-
-	if (character == nullptr) {
+	if (InteractWidgetInstance != nullptr) {
 		return;
 	}
 
-	if (!character->IsLocallyControlled()) {
-		return;
-	}
-
-	UUserWidget* instance = CreateWidget<UUserWidget, APlayerControllerBase>(character->GetPlayerControllerBase(), InteractWidgetClass);
+	UUserWidget* instance = CreateWidget<UUserWidget, APlayerControllerBase>(controller, InteractWidgetClass);
 	instance->AddToPlayerScreen(10);
 	InteractWidgetInstance = instance;
+
+	controller->OnInteractStart.AddDynamic(this, &AShop::ShowShopWidget);
 }
 
-void AShop::HideInteractWidget(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AShop::HideInteractWidget(APlayerControllerBase* controller)
 {
-	ACharacterBase* character = Cast<ACharacterBase>(OtherActor);
-
-	if (character == nullptr) {
-		return;
-	}
-
-	if (!character->IsLocallyControlled()) {
-		return;
-	}
-
 	if (InteractWidgetInstance == nullptr) {
 		return;
 	}
 
 	InteractWidgetInstance->RemoveFromParent();
 	InteractWidgetInstance = nullptr;
+
+	controller->OnInteractStart.RemoveDynamic(this, &AShop::ShowShopWidget);
+}
+
+void AShop::ShowShopWidget(APlayerControllerBase* controller)
+{
+	if (controller == nullptr) {
+		return;
+	}
+
+	if (ShopWidgetInstance != nullptr) {
+		return;
+	}
+
+	HideInteractWidget(controller);
+
+	controller->OnInteractStart.AddDynamic(this, &AShop::HideShopWidget);
+
+	UUserWidget* instance = CreateWidget<UUserWidget, APlayerControllerBase>(controller, ShopWidgetClass);
+	instance->AddToPlayerScreen(10);
+	ShopWidgetInstance = instance;
+}
+
+void AShop::HideShopWidget(APlayerControllerBase* controller)
+{
+	if (controller == nullptr) {
+		return;
+	}
+
+	if (ShopWidgetInstance == nullptr) {
+		return;
+	}
+
+	controller->OnInteractStart.RemoveDynamic(this, &AShop::HideShopWidget);
+
+	ShopWidgetInstance->RemoveFromParent();
+	ShopWidgetInstance = nullptr;
+
+	if (m_PlayerWithinBounds) {
+		ShowInteractWidget(controller);
+	}
+}
+
+void AShop::ActorEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ACharacterBase* character = Cast<ACharacterBase>(OtherActor);
+
+	if (character == nullptr) {
+		return;
+	}
+
+	// only looking out for local player.
+	if (!character->IsLocallyControlled()) {
+		return;
+	}
+
+	m_PlayerWithinBounds = true;
+
+	APlayerControllerBase* controller = character->GetPlayerControllerBase();
+
+	ShowInteractWidget(controller);
+}
+
+void AShop::ActorExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	ACharacterBase* character = Cast<ACharacterBase>(OtherActor);
+
+	if (character == nullptr) {
+		return;
+	}
+
+	// only looking out for local player.
+	if (!character->IsLocallyControlled()) {
+		return;
+	}
+
+	m_PlayerWithinBounds = false;
+
+	APlayerControllerBase* controller = character->GetPlayerControllerBase();
+
+	HideInteractWidget(controller);
+	HideShopWidget(controller);
 }
 
 // Called every frame

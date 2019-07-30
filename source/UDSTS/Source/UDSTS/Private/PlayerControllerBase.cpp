@@ -152,6 +152,7 @@ void APlayerControllerBase::InteractStart()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->InteractStart();
+		OnInteractStart.Broadcast(this);
 	}
 }
 
@@ -160,6 +161,7 @@ void APlayerControllerBase::InteractEnd()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->InteractEnd();
+		OnInteractEnd.Broadcast(this);
 	}
 }
 
@@ -168,6 +170,7 @@ void APlayerControllerBase::PreviousEquipment()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->PreviousEquipment();
+		OnPreviousEquipment.Broadcast(this);
 	}
 }
 
@@ -176,6 +179,7 @@ void APlayerControllerBase::NextEquipment()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->NextEquipment();
+		OnNextEquipment.Broadcast(this);
 	}
 }
 

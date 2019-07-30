@@ -8,7 +8,7 @@
 
 class ACharacterBase;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCharacterInteract, APlayerControllerBase*, character);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerControllerInput, APlayerControllerBase*, character);
 
 /**
  * 
@@ -72,28 +72,28 @@ public:
 	inline void SetInputToCharacter(bool active) { m_IsInputToCharacterActive = active; };
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnCharacterInteract OnPreviousEquipment;
+	FOnPlayerControllerInput OnPreviousEquipment;
 	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnCharacterInteract OnNextEquipment;
+	FOnPlayerControllerInput OnNextEquipment;
 
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
-	FOnCharacterInteract OnInteractStart;
+	FOnPlayerControllerInput OnInteractStart;
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
-	FOnCharacterInteract OnInteractEnd;
+	FOnPlayerControllerInput OnInteractEnd;
 
 	/* Shop */
 
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
-	FOnCharacterInteract OnUILeft;
+	FOnPlayerControllerInput OnUILeft;
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
-	FOnCharacterInteract OnUIRight;
+	FOnPlayerControllerInput OnUIRight;
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
-	FOnCharacterInteract OnUIUp;
+	FOnPlayerControllerInput OnUIUp;
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
-	FOnCharacterInteract OnUIDown;
+	FOnPlayerControllerInput OnUIDown;
 
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
-	FOnCharacterInteract OnShopBuy;
+	FOnPlayerControllerInput OnShopBuy;
 
 protected:
 	UPROPERTY(Replicated, VisibleAnywhere, Category = "Player")
