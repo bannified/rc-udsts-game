@@ -5,7 +5,7 @@
 #include "CharacterBase.h"
 #include "PlayerControllerBase.h"
 #include "NavigationSystem/Public/NavAreas/NavArea_Obstacle.h"
-#include "UserWidget.h"
+#include "ShopWidget.h"
 #include "UDSTS.h"
 
 // Sets default values
@@ -99,7 +99,8 @@ void AShop::ShowShopWidget(APlayerControllerBase* controller)
 
 	controller->OnInteractStart.AddDynamic(this, &AShop::HideShopWidget);
 
-	UUserWidget* instance = CreateWidget<UUserWidget, APlayerControllerBase>(controller, ShopWidgetClass);
+	UShopWidget* instance = CreateWidget<UShopWidget, APlayerControllerBase>(controller, ShopWidgetClass);
+	instance->Setup(controller);
 	instance->AddToPlayerScreen(10);
 	ShopWidgetInstance = instance;
 }
@@ -171,4 +172,3 @@ void AShop::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-

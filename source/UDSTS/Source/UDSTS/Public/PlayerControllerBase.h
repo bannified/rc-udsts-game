@@ -72,7 +72,10 @@ public:
 	inline void SetInputToCharacter(bool active) { m_IsInputToCharacterActive = active; };
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnPlayerControllerInput OnPreviousEquipment;
+	FOnPlayerControllerInput OnEscapeDown; 
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnPlayerControllerInput OnPreviousEquipment; 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnPlayerControllerInput OnNextEquipment;
 

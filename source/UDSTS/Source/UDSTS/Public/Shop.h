@@ -10,6 +10,7 @@ class UUserWidget;
 class ABase;
 class UBoxComponent;
 class ACharacterBase;
+class UShopWidget;
 class APlayerControllerBase;
 
 UCLASS()
@@ -46,9 +47,9 @@ protected:
 	void HideInteractWidget(APlayerControllerBase* playerController);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UUserWidget> ShopWidgetClass;
+	TSubclassOf<UShopWidget> ShopWidgetClass;
 	UPROPERTY(BlueprintReadOnly)
-	UUserWidget* ShopWidgetInstance;
+	UShopWidget* ShopWidgetInstance;
 
 	UFUNCTION(BlueprintCallable)
 	void ShowShopWidget(APlayerControllerBase* controller);
@@ -66,5 +67,4 @@ public:
 
 private:
 	bool m_PlayerWithinBounds;
-
 };

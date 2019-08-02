@@ -188,6 +188,7 @@ void APlayerControllerBase::Escape()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->Escape();
+		OnEscapeDown.Broadcast(this);
 	}
 }
 
