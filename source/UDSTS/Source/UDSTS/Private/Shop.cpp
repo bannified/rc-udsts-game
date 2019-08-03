@@ -177,7 +177,7 @@ bool AShop::BuyWeaponForCharacter_Validate(UWeaponDataAsset* weapon, ACharacterB
 {
 	int nextLevel = -1;
 
-	int* currentLevel = character->GetWeaponCurrentLevel(weapon);
+	const int* currentLevel = character->GetWeaponCurrentLevel(weapon);
 
 	if (currentLevel == nullptr) {
 		nextLevel = 0;

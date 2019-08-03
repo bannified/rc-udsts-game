@@ -36,7 +36,7 @@ public:
 	}
 
 	// Returns nullptr if weapon does not exist.
-	FORCEINLINE int* GetWeaponCurrentLevel(const UWeaponDataAsset* weapon)
+	FORCEINLINE const int* GetWeaponCurrentLevel(const UWeaponDataAsset* weapon)
 	{
 		return WeaponToLevelMap.Find(weapon);
 	}
