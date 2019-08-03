@@ -175,31 +175,7 @@ void AShop::BuyWeaponForCharacter_Implementation(UWeaponDataAsset* weapon, AChar
 
 bool AShop::BuyWeaponForCharacter_Validate(UWeaponDataAsset* weapon, ACharacterBase* character)
 {
-	int nextLevel = -1;
-
-	const int* currentLevel = character->GetWeaponCurrentLevel(weapon);
-
-	if (currentLevel == nullptr) {
-		nextLevel = 0;
-	}
-	else {
-		nextLevel = *currentLevel + 1;
-	}
-
-	if (nextLevel < 0 || nextLevel >= weapon->GetMaxLevel()) {
-		// invalid level.
-		return false;
-	}
-
-	// checking for price.
-	FWeaponProperties properties = weapon->PropertiesList[nextLevel];
-
-	if (character->GetCurrentMatter() < properties.CostOfUpgrade) {
-		// not enough money.
-		return false;
-	}
-
-	return true;
+	return weapon->IsBuyableByCharacter(character);
 }
 
 // Called every frame

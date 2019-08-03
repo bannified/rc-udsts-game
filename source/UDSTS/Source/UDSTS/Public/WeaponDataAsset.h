@@ -10,6 +10,7 @@
 
 class UStaticMesh;
 class ANozzleBase;
+class ACharacterBase;
 
 /**
  * 
@@ -36,5 +37,8 @@ public:
 	FName DisplayName;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Description")
 	FSlateBrush DisplayImage;
+
+	UFUNCTION(BlueprintCallable, Category = "Gameplay")
+	bool IsBuyableByCharacter(ACharacterBase* character);
 
 };

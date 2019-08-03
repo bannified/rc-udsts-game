@@ -30,33 +30,13 @@ bool UShopWidget::BuyWeapon(UWeaponDataAsset* weapon)
 {
 	ACharacterBase* character = ShopInstance->CurrentCharacter;
 
-	int nextLevel = -1;
-
-	const int* currentLevel = character->GetWeaponCurrentLevel(weapon);
-
-	if (currentLevel == nullptr) {
-		nextLevel = 0;
-	} 
+	if (weapon->IsBuyableByCharacter(character)) {
+		ShopInstance->BuyWeaponForCharacter(weapon, character);
+		return true;
+	}
 	else {
-		nextLevel = *currentLevel + 1;
-	}
-
-	if (nextLevel < 0 || nextLevel >= weapon->GetMaxLevel()) {
-		// invalid level.
 		return false;
 	}
-
-	// checking for price.
-	FWeaponProperties properties = weapon->PropertiesList[nextLevel];
-
-	if (character->GetCurrentMatter() < properties.CostOfUpgrade) {
-		// not enough money.
-		return false;
-	}
-
-	ShopInstance->BuyWeaponForCharacter(weapon, character);
-
-	return true;
 }
 
 void UShopWidget::OnLeftButton(APlayerControllerBase* controller)

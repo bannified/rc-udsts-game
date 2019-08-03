@@ -61,7 +61,7 @@ void ACharacterBase::UpgradeWeapon_Implementation(UWeaponDataAsset* weapon)
 
 bool ACharacterBase::UpgradeWeapon_Validate(UWeaponDataAsset* weapon)
 {
-	return true;
+	return weapon->IsBuyableByCharacter(this);
 }
 
 
