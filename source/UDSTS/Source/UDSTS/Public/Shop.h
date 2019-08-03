@@ -12,12 +12,15 @@ class UBoxComponent;
 class ACharacterBase;
 class UShopWidget;
 class APlayerControllerBase;
+class UWeaponDataAsset;
 
 UCLASS()
 class UDSTS_API AShop : public AActor
 {
 	GENERATED_BODY()
 	
+	friend UShopWidget;
+
 public:	
 	// Sets default values for this actor's properties
 	AShop();
@@ -39,8 +42,11 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	UUserWidget* InteractWidgetInstance;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(Replicated, BlueprintReadOnly)
 	ACharacterBase* CurrentCharacter;
+
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	TArray<UWeaponDataAsset*> WeaponsList;
 
 	void ShowInteractWidget(APlayerControllerBase* playerController);
 
@@ -60,6 +66,9 @@ protected:
 	void ActorEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 	void ActorExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable)
+	void BuyWeaponForCharacter(UWeaponDataAsset* weapon, ACharacterBase* character);
 
 public:	
 	// Called every frame

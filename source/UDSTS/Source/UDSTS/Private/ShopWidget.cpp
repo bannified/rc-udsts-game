@@ -2,9 +2,10 @@
 
 #include "ShopWidget.h"
 #include "CharacterBase.h"
+#include "Shop.h"
 #include "PlayerControllerBase.h"
 
-void UShopWidget::Setup(APlayerControllerBase* controller)
+void UShopWidget::Setup(APlayerControllerBase* controller, AShop* shop)
 {
 	controller->OnUILeft.AddDynamic(this, &UShopWidget::OnLeftButton);
 	controller->OnUIRight.AddDynamic(this, &UShopWidget::OnRightButton);
@@ -13,6 +14,8 @@ void UShopWidget::Setup(APlayerControllerBase* controller)
 
 	controller->OnEscapeDown.AddDynamic(this, &UShopWidget::OnEscapeButton);
 	controller->OnShopBuy.AddDynamic(this, &UShopWidget::OnShopBuy);
+	
+	ShopInstance = shop;
 }
 
 void UShopWidget::Shutdown(APlayerControllerBase* controller)
@@ -23,13 +26,36 @@ void UShopWidget::Shutdown(APlayerControllerBase* controller)
 	controller->OnUIDown.RemoveDynamic(this, &UShopWidget::OnDownButton);
 }
 
-void UShopWidget::BuyNozzle_Implementation()
+bool UShopWidget::BuyWeapon(UWeaponDataAsset* weapon)
 {
+	ACharacterBase* character = ShopInstance->CurrentCharacter;
 
-}
+	int nextLevel = -1;
 
-bool UShopWidget::BuyNozzle_Validate()
-{
+	int* currentLevel = character->GetWeaponCurrentLevel(weapon);
+
+	if (currentLevel == nullptr) {
+		nextLevel = 0;
+	} 
+	else {
+		nextLevel = *currentLevel + 1;
+	}
+
+	if (nextLevel < 0 || nextLevel >= weapon->GetMaxLevel()) {
+		// invalid level.
+		return false;
+	}
+
+	// checking for price.
+	FWeaponProperties properties = weapon->PropertiesList[nextLevel];
+
+	if (character->GetCurrentMatter() < properties.CostOfUpgrade) {
+		// not enough money.
+		return false;
+	}
+
+	ShopInstance->BuyWeaponForCharacter(weapon, character);
+
 	return true;
 }
 

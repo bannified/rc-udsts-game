@@ -19,11 +19,12 @@ class UDSTS_API UWeaponDataAsset : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Gameplay")
-	FWeaponProperties m_Properties;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Gameplay")
-	int32 MaxLevel;
+	TArray<FWeaponProperties> PropertiesList;
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE int GetMaxLevel() { return PropertiesList.Num(); }
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Gameplay")
 	TSubclassOf<ANozzleBase> NozzleClass;

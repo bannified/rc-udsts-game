@@ -100,7 +100,7 @@ void AShop::ShowShopWidget(APlayerControllerBase* controller)
 	controller->OnInteractStart.AddDynamic(this, &AShop::HideShopWidget);
 
 	UShopWidget* instance = CreateWidget<UShopWidget, APlayerControllerBase>(controller, ShopWidgetClass);
-	instance->Setup(controller);
+	instance->Setup(controller, this);
 	instance->AddToPlayerScreen(10);
 	ShopWidgetInstance = instance;
 }
@@ -166,9 +166,53 @@ void AShop::ActorExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 	HideShopWidget(controller);
 }
 
+void AShop::BuyWeaponForCharacter_Implementation(UWeaponDataAsset* weapon, ACharacterBase* character)
+{
+	character->UpgradeWeapon(weapon);
+
+	character->SetWeapon(weapon);
+}
+
+bool AShop::BuyWeaponForCharacter_Validate(UWeaponDataAsset* weapon, ACharacterBase* character)
+{
+	int nextLevel = -1;
+
+	int* currentLevel = character->GetWeaponCurrentLevel(weapon);
+
+	if (currentLevel == nullptr) {
+		nextLevel = 0;
+	}
+	else {
+		nextLevel = *currentLevel + 1;
+	}
+
+	if (nextLevel < 0 || nextLevel >= weapon->GetMaxLevel()) {
+		// invalid level.
+		return false;
+	}
+
+	// checking for price.
+	FWeaponProperties properties = weapon->PropertiesList[nextLevel];
+
+	if (character->GetCurrentMatter() < properties.CostOfUpgrade) {
+		// not enough money.
+		return false;
+	}
+
+	return true;
+}
+
 // Called every frame
 void AShop::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AShop::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AShop, CurrentCharacter);
+	DOREPLIFETIME(AShop, WeaponsList);
 }

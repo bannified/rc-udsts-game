@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "PlayerControllerBase.h"
+#include "WeaponDataAsset.h"
 #include "CharacterBase.generated.h"
 
 class UCameraComponent;
@@ -29,7 +30,31 @@ public:
 		return Cast<APlayerControllerBase>(GetController());
 	};
 
+	FORCEINLINE bool HasWeapon(UWeaponDataAsset* weapon)
+	{
+		return WeaponToLevelMap.Contains(weapon);
+	}
+
+	// Returns nullptr if weapon does not exist.
+	FORCEINLINE int* GetWeaponCurrentLevel(const UWeaponDataAsset* weapon)
+	{
+		return WeaponToLevelMap.Find(weapon);
+	}
+
+	FORCEINLINE float GetCurrentMatter() { return CurrentMatter; }
+
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "Equipment")
+	void UpgradeWeapon(UWeaponDataAsset* weapon);
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "Equipment")
+	void AddLevelsToWeapon(UWeaponDataAsset* weapon, int levels);
+
+	UFUNCTION(NetMulticast, Reliable, WithValidation, BlueprintCallable, Category = "Equipment")
+	void SetWeapon(UWeaponDataAsset* weapon);
+
 protected:
+
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = "Equipment")
+	TMap<UWeaponDataAsset*, int> WeaponToLevelMap;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
 	UCameraComponent* MainCamera;
@@ -42,6 +67,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	float SwimSpeed;
+
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+	float CurrentMatter;
+
+	/**
+	 * Gameplay components
+	 */
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

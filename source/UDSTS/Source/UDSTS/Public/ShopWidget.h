@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Shop.h"
 #include "ShopWidget.generated.h"
 
 class ACharacterBase;
 class APlayerControllerBase;
+class AShop;
+class UWeaponDataAsset;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerInputEvent, APlayerControllerBase*, controller);
 
@@ -19,12 +22,11 @@ class UDSTS_API UShopWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
-	void Setup(APlayerControllerBase* controller);
-	void Shutdown(APlayerControllerBase* controller);
+	friend AShop;
 
-	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable)
-	void BuyNozzle();
+public:
+	void Setup(APlayerControllerBase* controller, AShop* shop);
+	void Shutdown(APlayerControllerBase* controller);
 
 protected:
 
@@ -40,6 +42,12 @@ protected:
 	FPlayerInputEvent OnEscapeButtonReceive;
 	UPROPERTY(BlueprintAssignable, Category = "UI Events")
 	FPlayerInputEvent OnShopBuyReceive;
+
+	UFUNCTION(BlueprintCallable, Category = "Shop")
+	bool BuyWeapon(UWeaponDataAsset* weapon);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shop")
+	AShop* ShopInstance;
 
 private:
 

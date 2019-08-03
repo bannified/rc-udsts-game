@@ -39,6 +39,40 @@ ACharacterBase::ACharacterBase()
 	Boost_Force = 1000.0f;
 	Boost_Cooldown = 10.0f;
 	b_CanBoost = true;
+
+	CurrentMatter = 100.0f;
+}
+
+void ACharacterBase::AddLevelsToWeapon_Implementation(UWeaponDataAsset* weapon, int levels)
+{
+	int currentLevel = WeaponToLevelMap.FindOrAdd(weapon);
+	currentLevel += levels;
+}
+
+bool ACharacterBase::AddLevelsToWeapon_Validate(UWeaponDataAsset* weapon, int levels)
+{
+	return true;
+}
+
+void ACharacterBase::UpgradeWeapon_Implementation(UWeaponDataAsset* weapon)
+{
+	AddLevelsToWeapon(weapon, 1);
+}
+
+bool ACharacterBase::UpgradeWeapon_Validate(UWeaponDataAsset* weapon)
+{
+	return true;
+}
+
+
+void ACharacterBase::SetWeapon_Implementation(UWeaponDataAsset* weapon)
+{
+
+}
+
+bool ACharacterBase::SetWeapon_Validate(UWeaponDataAsset* weapon)
+{
+	return true;
 }
 
 // Called when the game starts or when spawned
@@ -235,4 +269,7 @@ void ACharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ACharacterBase, b_CanBoost);
+	DOREPLIFETIME(ACharacterBase, WeaponToLevelMap);
+
+	DOREPLIFETIME(ACharacterBase, CurrentMatter);
 }
