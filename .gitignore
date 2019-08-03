@@ -48,6 +48,9 @@ Binaries/
 # Builds
 Build/
 
+# Editor temp files
+enc_temp_folder/
+
 # Don't ignore icon files in Build
 !Build/**/*.ico
 
