@@ -170,8 +170,9 @@ void APlayerControllerBase::PreviousEquipment()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->PreviousEquipment();
-		OnPreviousEquipment.Broadcast(this);
 	}
+
+	OnPreviousEquipment.Broadcast(this);
 }
 
 void APlayerControllerBase::NextEquipment()
@@ -179,8 +180,9 @@ void APlayerControllerBase::NextEquipment()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->NextEquipment();
-		OnNextEquipment.Broadcast(this);
 	}
+
+	OnNextEquipment.Broadcast(this);
 }
 
 void APlayerControllerBase::Escape()
@@ -188,8 +190,9 @@ void APlayerControllerBase::Escape()
 	if (m_IsInputToCharacterActive && m_Character)
 	{
 		m_Character->Escape();
-		OnEscapeDown.Broadcast(this);
 	}
+
+	OnEscapeDown.Broadcast(this);
 }
 
 void APlayerControllerBase::Contextual()
@@ -263,5 +266,6 @@ void APlayerControllerBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(APlayerControllerBase, m_Character);
+	DOREPLIFETIME(APlayerControllerBase, m_IsInputToCharacterActive);
 
 }

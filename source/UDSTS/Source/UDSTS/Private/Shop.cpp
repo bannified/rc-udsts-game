@@ -6,6 +6,8 @@
 #include "PlayerControllerBase.h"
 #include "NavigationSystem/Public/NavAreas/NavArea_Obstacle.h"
 #include "ShopWidget.h"
+#include "WidgetBlueprintLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "UDSTS.h"
 
 // Sets default values
@@ -96,13 +98,23 @@ void AShop::ShowShopWidget(APlayerControllerBase* controller)
 	}
 
 	HideInteractWidget(controller);
-
 	controller->OnInteractStart.AddDynamic(this, &AShop::HideShopWidget);
 
 	UShopWidget* instance = CreateWidget<UShopWidget, APlayerControllerBase>(controller, ShopWidgetClass);
+	ShopWidgetInstance = instance;
 	instance->Setup(controller, this);
 	instance->AddToPlayerScreen(10);
-	ShopWidgetInstance = instance;
+
+	controller->SetInputToCharacter(false);
+	controller->GetCharacter()->GetCharacterMovement()->DisableMovement();
+	controller->bShowMouseCursor = true;
+
+
+	FInputModeGameAndUI inputMode;
+	inputMode.SetHideCursorDuringCapture(true);
+	inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+	controller->SetInputMode(inputMode);
 }
 
 void AShop::HideShopWidget(APlayerControllerBase* controller)
@@ -116,9 +128,17 @@ void AShop::HideShopWidget(APlayerControllerBase* controller)
 	}
 
 	controller->OnInteractStart.RemoveDynamic(this, &AShop::HideShopWidget);
-
+	ShopWidgetInstance->Shutdown(controller);
 	ShopWidgetInstance->RemoveFromParent();
 	ShopWidgetInstance = nullptr;
+
+	controller->SetInputToCharacter(true);
+	controller->GetCharacter()->GetCharacterMovement()->SetMovementMode(MOVE_Swimming);
+	controller->bShowMouseCursor = false;
+	UWidgetBlueprintLibrary::SetFocusToGameViewport();
+
+	FInputModeGameOnly inputMode;
+	controller->SetInputMode(inputMode);
 
 	if (m_PlayerWithinBounds) {
 		ShowInteractWidget(controller);
@@ -137,6 +157,8 @@ void AShop::ActorEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 	if (!character->IsLocallyControlled()) {
 		return;
 	}
+
+	CurrentCharacter = character;
 
 	m_PlayerWithinBounds = true;
 
@@ -158,6 +180,8 @@ void AShop::ActorExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 		return;
 	}
 
+	CurrentCharacter = nullptr;
+
 	m_PlayerWithinBounds = false;
 
 	APlayerControllerBase* controller = character->GetPlayerControllerBase();
@@ -168,8 +192,16 @@ void AShop::ActorExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 
 void AShop::BuyWeaponForCharacter_Implementation(UWeaponDataAsset* weapon, ACharacterBase* character)
 {
-	character->UpgradeWeapon(weapon);
+	const int* weaponCurrentLevelPtr = character->GetWeaponCurrentLevel(weapon);
 
+	if (weaponCurrentLevelPtr != nullptr) {
+		character->ModifyCurrentMatter(-weapon->PropertiesList[*weaponCurrentLevelPtr + 1].CostOfUpgrade);
+	}
+	else {
+		character->ModifyCurrentMatter(-weapon->PropertiesList[0].CostOfUpgrade);
+	}
+
+	character->UpgradeWeapon(weapon);
 	character->SetWeapon(weapon);
 }
 
@@ -189,6 +221,5 @@ void AShop::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AShop, CurrentCharacter);
 	DOREPLIFETIME(AShop, WeaponsList);
 }

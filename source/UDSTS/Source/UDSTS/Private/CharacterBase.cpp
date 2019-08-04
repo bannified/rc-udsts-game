@@ -41,12 +41,24 @@ ACharacterBase::ACharacterBase()
 	b_CanBoost = true;
 
 	CurrentMatter = 100.0f;
+
+	WeaponToLevelMap = {};
+}
+
+void ACharacterBase::ModifyCurrentMatter(float delta)
+{
+	CurrentMatter += delta;
 }
 
 void ACharacterBase::AddLevelsToWeapon_Implementation(UWeaponDataAsset* weapon, int levels)
 {
-	int currentLevel = WeaponToLevelMap.FindOrAdd(weapon);
-	currentLevel += levels;
+	if (!WeaponToLevelMap.Contains(weapon)) {
+		WeaponToLevelMap.FindOrAdd(weapon);
+		WeaponToLevelMap[weapon] += levels - 1;
+	}
+	else {
+		WeaponToLevelMap[weapon] += levels;
+	}
 }
 
 bool ACharacterBase::AddLevelsToWeapon_Validate(UWeaponDataAsset* weapon, int levels)

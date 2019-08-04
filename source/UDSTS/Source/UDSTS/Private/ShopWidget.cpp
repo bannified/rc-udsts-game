@@ -16,6 +16,8 @@ void UShopWidget::Setup(APlayerControllerBase* controller, AShop* shop)
 	controller->OnShopBuy.AddDynamic(this, &UShopWidget::OnShopBuy);
 	
 	ShopInstance = shop;
+
+	OnSetupReceive();
 }
 
 void UShopWidget::Shutdown(APlayerControllerBase* controller)
@@ -24,6 +26,13 @@ void UShopWidget::Shutdown(APlayerControllerBase* controller)
 	controller->OnUIRight.RemoveDynamic(this, &UShopWidget::OnRightButton);
 	controller->OnUIUp.RemoveDynamic(this, &UShopWidget::OnUpButton);
 	controller->OnUIDown.RemoveDynamic(this, &UShopWidget::OnDownButton);
+
+	controller->OnEscapeDown.RemoveDynamic(this, &UShopWidget::OnEscapeButton);
+	controller->OnShopBuy.RemoveDynamic(this, &UShopWidget::OnShopBuy);
+
+	ShopInstance = nullptr;
+
+	OnShutdownReceive();
 }
 
 bool UShopWidget::BuyWeapon(UWeaponDataAsset* weapon)

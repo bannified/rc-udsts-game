@@ -42,7 +42,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	UUserWidget* InteractWidgetInstance;
 
-	UPROPERTY(Replicated, BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly)
 	ACharacterBase* CurrentCharacter;
 
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
@@ -53,7 +53,7 @@ protected:
 	void HideInteractWidget(APlayerControllerBase* playerController);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UShopWidget> ShopWidgetClass;
+	TSubclassOf<UUserWidget> ShopWidgetClass;
 	UPROPERTY(BlueprintReadOnly)
 	UShopWidget* ShopWidgetInstance;
 

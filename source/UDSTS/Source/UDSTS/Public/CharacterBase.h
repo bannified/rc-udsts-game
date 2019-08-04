@@ -25,11 +25,13 @@ public:
 	ACharacterBase();
 
 	/** Returns controller for this actor. */
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE APlayerControllerBase* GetPlayerControllerBase()
 	{
 		return Cast<APlayerControllerBase>(GetController());
 	};
 
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE bool HasWeapon(UWeaponDataAsset* weapon)
 	{
 		return WeaponToLevelMap.Contains(weapon);
@@ -42,6 +44,9 @@ public:
 	}
 
 	FORCEINLINE float GetCurrentMatter() { return CurrentMatter; }
+
+	UFUNCTION(BlueprintCallable)
+	void ModifyCurrentMatter(float delta);
 
 	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "Equipment")
 	void UpgradeWeapon(UWeaponDataAsset* weapon);

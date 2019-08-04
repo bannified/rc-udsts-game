@@ -49,14 +49,25 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Shop")
 	AShop* ShopInstance;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnSetupReceive();
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnShutdownReceive();
+
 private:
 
+	UFUNCTION()
 	void OnLeftButton(APlayerControllerBase* controller);
+	UFUNCTION()
 	void OnRightButton(APlayerControllerBase* controller);
+	UFUNCTION()
 	void OnDownButton(APlayerControllerBase* controller);
+	UFUNCTION()
 	void OnUpButton(APlayerControllerBase* controller);
 
+	UFUNCTION()
 	void OnEscapeButton(APlayerControllerBase* controller);
 
+	UFUNCTION()
 	void OnShopBuy(APlayerControllerBase* controller);
 };

@@ -71,6 +71,9 @@ public:
 
 	inline void SetInputToCharacter(bool active) { m_IsInputToCharacterActive = active; };
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE ACharacterBase* GetCharacterBase() { return m_Character; }
+
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnPlayerControllerInput OnEscapeDown; 
 
