@@ -29,6 +29,12 @@ public:
 	UFUNCTION(NetMulticast, Unreliable, BlueprintCallable, Category = "Gameplay")
 	void PlayBoostSound();
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UStaticMeshComponent* GetMesh()
+	{
+		return BagMeshComponent;
+	};
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

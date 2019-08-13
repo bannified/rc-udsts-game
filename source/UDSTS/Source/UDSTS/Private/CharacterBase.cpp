@@ -6,7 +6,9 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "BagBase.h"
 #include "UnrealNetwork.h"
+#include "UDSTS.h"
 
 // Sets default values
 ACharacterBase::ACharacterBase()
@@ -93,6 +95,27 @@ void ACharacterBase::BeginPlay()
 	Super::BeginPlay();
 	
 	GetCharacterMovement()->MaxSwimSpeed = SwimSpeed;
+	if (BagClass != nullptr) {
+		InitializeBag(BagClass);
+	}
+}
+
+void ACharacterBase::InitializeBag_Implementation(TSubclassOf<ABagBase> inBagClass)
+{
+	FActorSpawnParameters spawnParameters;
+	spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	ABagBase* bag = GetWorld()->SpawnActor<ABagBase>(inBagClass, FTransform(FRotator::ZeroRotator, FVector::ZeroVector, BagSpawnScale), spawnParameters);
+	bag->SetOwner(this);
+	FAttachmentTransformRules rules(EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, EAttachmentRule::KeepRelative, true);
+	bag->AttachToComponent(GetMesh(), rules, FName("Back"));
+
+	Bag = bag;
+}
+
+bool ACharacterBase::InitializeBag_Validate(TSubclassOf<ABagBase> bagClass)
+{
+	return true;
 }
 
 void ACharacterBase::MoveForward(float value)
@@ -214,12 +237,12 @@ void ACharacterBase::Contextual()
 
 void ACharacterBase::PlayBoostEffects_Implementation()
 {
-	if (BoosterParticleSystem != nullptr) {
-		UGameplayStatics::SpawnEmitterAttached(BoosterParticleSystem, GetMesh(), BoosterEndSocketName, FVector::ZeroVector, FRotator::ZeroRotator, BoosterParticleScale, EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::AutoRelease);
+	if (BoosterParticleSystem != nullptr && Bag != nullptr) {
+		UGameplayStatics::SpawnEmitterAttached(BoosterParticleSystem, Bag->GetMesh(), BoosterEndSocketName, FVector::ZeroVector, FRotator::ZeroRotator, BoosterParticleScale, EAttachLocation::KeepRelativeOffset, true, EPSCPoolMethod::AutoRelease);
 	}
 
-	if (BoosterSound != nullptr) {
-		UGameplayStatics::SpawnSoundAttached(BoosterSound, GetMesh(), BoosterEndSocketName, FVector::ZeroVector, EAttachLocation::KeepRelativeOffset, false, 0.5f);
+	if (Bag != nullptr) {
+		Bag->PlayBoostSound();
 	}
 }
 
@@ -284,4 +307,7 @@ void ACharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	DOREPLIFETIME(ACharacterBase, WeaponToLevelMap);
 
 	DOREPLIFETIME(ACharacterBase, CurrentMatter);
+
+	//DOREPLIFETIME(ACharacterBase, Bag);
+	DOREPLIFETIME(ACharacterBase, BagClass);
 }

@@ -10,6 +10,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class ABagBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBoostEvent, ACharacterBase*, Charater);
 
@@ -77,11 +78,28 @@ protected:
 	float CurrentMatter;
 
 	/**
+	 * Gameplay settings
+	 */
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ABagBase> BagClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector BagSpawnScale;
+
+	/**
 	 * Gameplay components
 	 */
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite)
+	ABagBase* Bag;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	/**
+	 * Initialization
+	 */
+	UFUNCTION(NetMulticast, WithValidation, Reliable, BlueprintCallable)
+	void InitializeBag(TSubclassOf<ABagBase> inBagClass);
 
 	/**
 	 * Movement Methods
