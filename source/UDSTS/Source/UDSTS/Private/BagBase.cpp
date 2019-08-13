@@ -26,7 +26,7 @@ ABagBase::ABagBase()
 
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 	AudioComponent->SetupAttachment(BagMeshComponent);
-
+	AudioComponent->bAutoActivate = false;
 }
 
 bool ABagBase::IsMatterSufficient(float value)
@@ -36,12 +36,13 @@ bool ABagBase::IsMatterSufficient(float value)
 
 void ABagBase::PlayBoostSound_Implementation()
 {
-
+	AudioComponent->Sound = BoostSoundCue;
+	AudioComponent->Play();
 }
 
 void ABagBase::ModifyMatterBy_Implementation(float deltaMatter, bool overflow /*= false*/)
 {
-
+	Matter += deltaMatter;
 }
 
 bool ABagBase::ModifyMatterBy_Validate(float deltaMatter, bool overflow /*= false*/)
@@ -53,7 +54,6 @@ bool ABagBase::ModifyMatterBy_Validate(float deltaMatter, bool overflow /*= fals
 void ABagBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame

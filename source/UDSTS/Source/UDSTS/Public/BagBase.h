@@ -59,7 +59,7 @@ protected:
 	float MaxMatter;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<USoundCue> SoundCueClass;
+	USoundBase* BoostSoundCue;
 
 public:	
 	// Called every frame
