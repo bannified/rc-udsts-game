@@ -98,7 +98,7 @@ protected:
 	/**
 	 * Initialization
 	 */
-	UFUNCTION(NetMulticast, WithValidation, Reliable, BlueprintCallable)
+	UFUNCTION(Server, WithValidation, Reliable, BlueprintCallable)
 	void InitializeBag(TSubclassOf<ABagBase> inBagClass);
 
 	/**

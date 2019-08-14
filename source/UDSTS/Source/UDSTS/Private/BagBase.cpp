@@ -27,6 +27,8 @@ ABagBase::ABagBase()
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 	AudioComponent->SetupAttachment(BagMeshComponent);
 	AudioComponent->bAutoActivate = false;
+
+	SetReplicates(true);
 }
 
 bool ABagBase::IsMatterSufficient(float value)
